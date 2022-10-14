@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Modal} from "react-bootstrap";
+import { Routes, Route, Link } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 
 const Scanner = ({
@@ -79,42 +79,34 @@ const Scanner = ({
   };
 
   return (
-    <div className="fixed-bottom" style={{"bottom":"2em"}}>
+    <div className="fixed-bottom" style={{"bottom":"1em"}}>
         <div className="container-fluid">
             <div id="reader" width="100%" />
-            <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
-            {toggleVisibility ? (
-                <React.Fragment>
-                    <button
-                        className="btn btn-secondary"
-                        onClick={() => {
-                            handleClickAdvanced();
-                        }}
-                        >
-                        Scan
-                    </button>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                            //handleClickAdvanced();
-                        }}
-                        >
-                        Pay
-                    </button>
-                </React.Fragment>
-                
-            ) : (
-                <button
-                className="btn btn-secondary btn-lg"
-                onClick={() => {
-                    handleStop();
-                    setToggleVisibility(!toggleVisibility);
-                }}
-                >
-                Stop
-                </button>
-            )}
-            </div>
+            <nav class="navbar navbar-expand bg-light justify-content-between">
+              <ul class="navbar-nav mx-auto text-center">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="#">Store</a>
+                  </li>
+                  <li class="nav-item">
+                    {toggleVisibility ? (
+                        <React.Fragment>
+                            <a class="nav-link" href="#"  onClick={() => {
+                              handleClickAdvanced();
+                            }}>Scan</a>
+                        </React.Fragment>
+                    ) : (
+                        <a class="nav-link" href="#"   onClick={() => {
+                          handleStop();
+                          setToggleVisibility(!toggleVisibility);
+                      }}>Stop</a>
+                    )}
+                    
+                  </li>
+                  <li class="nav-item">
+                    <Link class="nav-link" to="/cart">Cart</Link>
+                  </li>
+                </ul>
+            </nav>
         </div>
       </div>
     // <div style={{ position: "relative" }}>
