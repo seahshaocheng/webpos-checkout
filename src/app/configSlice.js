@@ -10,6 +10,9 @@ export const slice = createSlice({
     reducers:{
         act_saveConfig: (state, action) => {
             console.log(action.payload);
+            state.terminalId=action.payload.terminalId;
+            state.posId=action.payload.posId;
+            state.currency=action.payload.currency;
         },
     }
 });
@@ -17,6 +20,7 @@ export const slice = createSlice({
 export const { act_saveConfig} = slice.actions;
 
 export const saveConfig = (config) => async (dispatch,getState) => {
+    console.log("test")
     dispatch(act_saveConfig(config));
   };
 

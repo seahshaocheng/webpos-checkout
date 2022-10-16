@@ -3,6 +3,7 @@ import { Routes, Route, Link } from "react-router-dom";
 
 import {DemoHome} from './pages/DemoHome';
 import {Cart} from './pages/Cart';
+import {Config} from './pages/Config';
 import Scanner from "./components/scanner";
 
 import { addToCart } from "./app/cartSlice";
@@ -30,6 +31,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<DemoHome/>}/>
           <Route path="/cart" element={<Cart/>}/>
+          <Route path="/config" element={<Config/>}/>
         </Routes>
         <Scanner
         handleQuickResponse={handleQuickResponse}

@@ -109,6 +109,9 @@ const Scanner = ({
                       {cart.cart.length}
                     </Badge></Link>
                   </li>
+                  <li class="nav-item">
+                    <Link className="nav-link" to="/config">Config</Link>
+                  </li>
                 </ul>
             </nav>
         </div>

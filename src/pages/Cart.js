@@ -3,7 +3,8 @@ import {Alert} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Cart = () => {
-    const cart = useSelector((state) => state.cart)
+    const cart = useSelector((state) => state.cart);
+    const config = useSelector((state) => state.config);
 
     const makePayment = async () =>{
         console.log("clicked");
@@ -14,9 +15,9 @@ export const Cart = () => {
                 "Content-Type": "application/json",
               },
             body:JSON.stringify({
-                terminalId:"e280-347274603",
+                terminalId:config.terminalId,
                 amount:cart.total/Math.pow(10,cart.totalPrecision),
-                currency:"SGD"
+                currency:config.currency
             })
         });
         let responseBody = await response.json();
