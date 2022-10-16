@@ -14,7 +14,7 @@ export const Cart = () => {
                 "Content-Type": "application/json",
               },
             body:JSON.stringify({
-                terminalId:"S1F2-000158212621442",
+                terminalId:"e280-347274603",
                 amount:cart.total/Math.pow(10,cart.totalPrecision),
                 currency:"SGD"
             })

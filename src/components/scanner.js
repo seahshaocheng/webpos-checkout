@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import {Badge} from 'react-bootstrap';
 import { Html5Qrcode } from "html5-qrcode";
+import { useDispatch, useSelector } from "react-redux";
 
 const Scanner = ({
   html5QrCode,
@@ -8,6 +10,7 @@ const Scanner = ({
   handleQuickResponse
 }) => {
   const [toggleVisibility, setToggleVisibility] = useState(true);
+  const cart = useSelector((state) => state.cart)
 
   useEffect(() => {
     sethtml5QrCode(
@@ -100,10 +103,11 @@ const Scanner = ({
                           setToggleVisibility(!toggleVisibility);
                       }}>Stop</a>
                     )}
-                    
                   </li>
                   <li class="nav-item">
-                    <Link class="nav-link" to="/cart">Cart</Link>
+                    <Link className="nav-link" to="/cart">Cart <Badge pill bg="danger">
+                      {cart.cart.length}
+                    </Badge></Link>
                   </li>
                 </ul>
             </nav>
