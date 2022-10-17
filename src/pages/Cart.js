@@ -1,13 +1,74 @@
 import React, { useState , useEffect} from "react";
-import {Alert} from "react-bootstrap";
+import {Alert, Spinner, Button, Modal} from "react-bootstrap";
+import { clearCart } from "../app/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Cart = () => {
     const cart = useSelector((state) => state.cart);
     const config = useSelector((state) => state.config);
+    const dispatch = useDispatch();
+
+    const [paymentButtonDisabled,setPaymentButtonDisabled] =  useState(false);
+    const [paymentResultModalDisplay,setPaymentResultModalDisplay] = useState(false);
+    const [paymentResultmodalButtonVariant,setPaymentResultmodalButtonVariant] = useState("primary");
+    const [paymentResultImage,setPaymentResultImage] = useState("success");
+    const [paymentResultTitle,setpaymentResultTitle] = useState(null);
+    const [paymentSubTitle,setPaymentSubTitle] = useState(null);
+    const [paymentResultBody,setpaymentResultBody] = useState(null);
+
+    const calculateCartTotal = () => {
+        return cart.total/Math.pow(10,cart.totalPrecision);
+    }
+
+    const handleAdditionalResponse = (additionalResponse) => {
+        let splitedResponse =  additionalResponse.split("&");
+        let parsedAdditionalResponse = {};
+        for(var i = 0 ; i < splitedResponse.length; i++ ){
+            let valuepair = splitedResponse[i].split("=");
+            parsedAdditionalResponse[valuepair[0]]=decodeURIComponent(valuepair[1]);
+        }
+        return parsedAdditionalResponse;
+    }
+
+    const handlePaymentResponse = (terminalResponse) => {
+
+        if(terminalResponse.PaymentResponse.Response){
+            let paymentResult = terminalResponse.PaymentResponse.Response.Result;
+            switch(paymentResult){
+                case "Success":
+                    setPaymentResultImage("success");
+                    setpaymentResultTitle("Successful Payment");
+                    setPaymentSubTitle("Transaction ID:")
+                    setpaymentResultBody(terminalResponse.PaymentResponse.POIData.POITransactionID.TransactionID)
+                    setPaymentResultmodalButtonVariant("success");
+                break;
+                case "Failure":
+                    setPaymentResultImage("failed");
+                    setpaymentResultTitle("Payment Failed");
+                    setPaymentSubTitle("Reason:");
+                    let additionalResponse = handleAdditionalResponse(terminalResponse.PaymentResponse.Response.AdditionalResponse);
+                    setpaymentResultBody(additionalResponse.refusalReason);
+                    setPaymentResultmodalButtonVariant("danger");
+                break;
+                default:
+                    setPaymentResultImage("failed");
+                    setPaymentResultmodalButtonVariant("danger");
+                break;
+            }
+            setPaymentResultModalDisplay(true);
+        }
+    }
+
+    const handleClosePaymentResult= () => {
+        setPaymentResultModalDisplay(false);
+        setPaymentButtonDisabled(false);
+        dispatch(clearCart());
+        calculateCartTotal();
+    }
 
     const makePayment = async () =>{
         console.log("clicked");
+        setPaymentButtonDisabled(true);
         let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
         const response = await fetch(`${server}/makePayment`, {
             method: "POST",
@@ -22,6 +83,10 @@ export const Cart = () => {
         });
         let responseBody = await response.json();
         console.log(responseBody);
+        if(responseBody.SaleToPOIResponse!==undefined){
+            let paymentResponse= responseBody.SaleToPOIResponse;
+            handlePaymentResponse(paymentResponse);
+        }
         //do handling of event
     }
 
@@ -63,14 +128,71 @@ export const Cart = () => {
             }
             <div className="fixed-bottom" style={{"bottom":"5em"}}>
                 <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
-                    <button
-                        className="btn btn-primary"
-                        onClick={() => makePayment()}
-                        >
-                        Pay {cart.total/Math.pow(10,cart.totalPrecision)}
-                    </button>
+                {(cart.total>0)?
+                    <React.Fragment>
+                        <Button
+                            variant ="primary"
+                            size="lg"
+                            onClick={() => makePayment()}
+                            disabled={paymentButtonDisabled}
+                            >
+                                {
+                                    !paymentButtonDisabled?
+                                        "Pay "+calculateCartTotal()
+                                    :
+                                    <React.Fragment>
+                                        <Spinner animation="border" size="sm" role="status" as="span" variant="light" />     
+                                        <span>  Waiting... </span> 
+                                    </React.Fragment>
+                                }
+                            
+                        </Button>
+                            <Button
+                            variant ="secondary"
+                            size="lg"
+                            onClick={() => handleClosePaymentResult()}
+                            disabled={paymentButtonDisabled}
+                            >
+                               Clear Cart
+                        </Button>
+                    </React.Fragment>
+                    
+                    :""
+                }
                 </div>
             </div>
+            <Modal
+                show = {paymentResultModalDisplay}
+                size="sm"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                >
+                    <Modal.Body style={{
+                        textAlign:"center",
+                        }}>
+                        <h4>{paymentResultTitle}</h4>
+                            <img src={`/images/${paymentResultImage}.svg`} className="status-image" alt={paymentResultImage} />
+                            <div style={{margin:"1em 0"}}></div>
+                            {paymentSubTitle}<br/>
+                            {paymentResultBody}
+                    </Modal.Body>
+                    <Modal.Footer
+                        style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        overflow:"break-word"
+                        }}>
+                        <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
+                            <Button 
+                                size="lg"
+                                variant={paymentResultmodalButtonVariant}
+                                onClick={() => handleClosePaymentResult()}>
+                                    OK
+                            </Button>
+                        </div>
+                    </Modal.Footer>
+            </Modal>
         </React.Fragment>
     )
 };

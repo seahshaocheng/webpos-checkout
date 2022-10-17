@@ -11,6 +11,7 @@ const Scanner = ({
 }) => {
   const [toggleVisibility, setToggleVisibility] = useState(true);
   const cart = useSelector((state) => state.cart)
+  const config = useSelector((state) => state.config);
 
   useEffect(() => {
     sethtml5QrCode(
@@ -110,7 +111,16 @@ const Scanner = ({
                     </Badge></Link>
                   </li>
                   <li class="nav-item">
-                    <Link className="nav-link" to="/config">Config</Link>
+                    <Link className="nav-link" to="/config">Config
+                    {(config.terminalId===null || config.posId===null || config.currency===null)?
+                        <Badge pill bg="warning">
+                          !
+                        </Badge>:
+                        <Badge pill bg="success">
+                          ok
+                        </Badge>
+                      }
+                    </Link>
                   </li>
                 </ul>
             </nav>

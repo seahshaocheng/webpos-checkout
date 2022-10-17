@@ -38,7 +38,9 @@ export const slice = createSlice({
            //
         },
         act_clearCart:(state,action) => {
-            //
+            console.log("clearCart");
+            state.total=0;
+            state.cart=[];
         }
     }
 });
@@ -48,5 +50,9 @@ export const { act_addToCart,act_removeFromCart,act_clearCart} = slice.actions;
 export const addToCart = (id) => async (dispatch,getState) => {
     dispatch(act_addToCart(id));
   };
+
+export const clearCart = () => (dispatch,getState) => {
+    dispatch(act_clearCart());
+};
 
 export default slice.reducer;

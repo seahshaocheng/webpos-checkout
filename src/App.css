@@ -1,0 +1,10 @@
+.modal-header {
+     border-bottom: 0 none !important;
+}
+.modal-footer {
+    border-top: 0 none !important;
+}
+
+.modal-body{
+    word-break: break-all;
+  }

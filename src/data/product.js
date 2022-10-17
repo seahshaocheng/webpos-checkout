@@ -9,17 +9,17 @@ const products = [
     },
     {
         "id": "SGMERCEVENT-2", 
-        "title": "Sunglasses",
+        "title": "Sunglasses (Error Test Case)",
         "price": {
-            value:10999,
+            value:10504,
             precision:2
         }
     },
     {
         "id": "SGMERCEVENT-3", 
-        "title": "Headphones",
+        "title": "Headphones (Refused Test Case)",
         "price": {
-            value:3999,
+            value:3505,
             precision:2
         }
     },

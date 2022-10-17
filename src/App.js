@@ -1,5 +1,6 @@
 import React, { useState , useEffect} from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import {Alert} from 'react-bootstrap';
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
 import {DemoHome} from './pages/DemoHome';
 import {Cart} from './pages/Cart';
@@ -13,12 +14,17 @@ import "./App.css";
 import 'bootstrap/dist/css/bootstrap.css';
 
 const App = () => {
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const config = useSelector((state) => state.config);
   const [decodedText, setDecodedText] = useState([]);
   const [html5QrCode, sethtml5QrCode] = useState({});
   function handleQuickResponse(data) {
+    //const history = useHistory();
     let id = data.result.text;
     dispatch(addToCart(id));
+    navigate('/cart');
   }
   return(
     <React.Fragment>
@@ -26,6 +32,14 @@ const App = () => {
         <Link to="/">
           <img src="/images/mystore-logo.svg" alt="" />
         </Link>
+        <div>
+          {(config.terminalId===null || config.posId===null || config.currency===null)?
+            <Alert variant="warning">
+              Please complete the configuration <Link to="/config">here!</Link>
+            </Alert>:
+            <img src={`/images/success.svg`} className="status-image" alt="success" style={{width:"1em"}} />
+          }
+        </div>
       </header>
       <div className="container-fluid">
         <Routes>

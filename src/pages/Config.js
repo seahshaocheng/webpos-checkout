@@ -2,10 +2,12 @@ import React, { useState , useEffect} from "react";
 import {Alert, Form} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { saveConfig } from "../app/configSlice";
+import {useNavigate} from "react-router-dom";
 
 export const Config = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const config = useSelector((state) => state.config)
     const [terminalId,setTerminalId] =  useState(null);
     const [posId,setPosId] = useState(null);
@@ -18,9 +20,8 @@ export const Config = () => {
             posId,
             currency
         }
-        console.log("clicked");
-        console.log(changedConfig);
         dispatch(saveConfig(changedConfig))
+        navigate('/cart');
     }
 
     return(
