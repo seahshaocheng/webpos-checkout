@@ -89,17 +89,17 @@ const Scanner = ({
             <nav class="navbar navbar-expand bg-light justify-content-between">
               <ul class="navbar-nav mx-auto text-center">
                   <li class="nav-item active">
-                    <a class="nav-link" href="#">Store</a>
+                    <Link className="nav-link" to="/">Store</Link>
                   </li>
                   <li class="nav-item">
                     {toggleVisibility ? (
                         <React.Fragment>
-                            <a class="nav-link" href="#"  onClick={() => {
+                            <a class="nav-link" onClick={() => {
                               handleClickAdvanced();
                             }}>Scan</a>
                         </React.Fragment>
                     ) : (
-                        <a class="nav-link" href="#"   onClick={() => {
+                        <a class="nav-link" onClick={() => {
                           handleStop();
                           setToggleVisibility(!toggleVisibility);
                       }}>Stop</a>

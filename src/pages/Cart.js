@@ -108,15 +108,15 @@ export const Cart = () => {
                             <tr>
                                 <td>{data.title}<br/><small class="text-muted">{data.id}</small></td>
                                 <td>{data.qty}</td>
-                                <td>{data.price.value/Math.pow(10,data.price.precision)}</td>
-                                <td>{data.gross/Math.pow(10,data.price.precision)}</td>
+                                <td>{config.currency} {data.price.value/Math.pow(10,data.price.precision)}</td>
+                                <td>{config.currency} {data.gross/Math.pow(10,data.price.precision)}</td>
                             </tr>
                             </tbody>
                         ))}
                         <tfoot>
                             <tr>
                                 <th scope="col" colSpan="3" style={{"textAlign":"right"}}>Total:</th>
-                                <th scope="col">{cart.total/Math.pow(10,cart.totalPrecision)}</th>
+                                <th scope="col">{config.currency} {cart.total/Math.pow(10,cart.totalPrecision)}</th>
                             </tr>
                         </tfoot>
                         </table>

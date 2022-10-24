@@ -2,7 +2,7 @@ import React, { useState , useEffect} from "react";
 import {Alert} from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-import {DemoHome} from './pages/DemoHome';
+import {Catalog} from './pages/Catalog';
 import {Cart} from './pages/Cart';
 import {Config} from './pages/Config';
 import Scanner from "./components/scanner";
@@ -11,6 +11,7 @@ import { addToCart } from "./app/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
+import "./products.css";
 import 'bootstrap/dist/css/bootstrap.css';
 
 const App = () => {
@@ -43,7 +44,7 @@ const App = () => {
       </header>
       <div className="container-fluid">
         <Routes>
-          <Route path="/" element={<DemoHome/>}/>
+          <Route path="/" element={<Catalog/>}/>
           <Route path="/cart" element={<Cart/>}/>
           <Route path="/config" element={<Config/>}/>
         </Routes>
