@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import {Badge} from 'react-bootstrap';
+import {Badge, Toast, ToastContainer} from 'react-bootstrap';
 import { Html5Qrcode } from "html5-qrcode";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,6 +10,9 @@ const Scanner = ({
   handleQuickResponse
 }) => {
   const [toggleVisibility, setToggleVisibility] = useState(true);
+  const [scannerErrorMessage,setScannerErrorMessage] = useState ();
+  const [toastVariant, setToastVariant] = useState("light");
+  const [show, setShow] = useState(false);
   const cart = useSelector((state) => state.cart)
   const config = useSelector((state) => state.config);
 
@@ -58,7 +61,12 @@ const Scanner = ({
           //   console.log("Err1",errorMessage)
           // }
         )
-        .catch((err) => console.log("Error4", err));
+        .catch((err) => {
+          console.log("Error4", err);
+          setToastVariant("danger");
+          setShow(true);
+          setScannerErrorMessage("Not able to load scanner");
+        });
     } catch (err) {
       console.log("error3", err);
     }
@@ -83,49 +91,57 @@ const Scanner = ({
   };
 
   return (
-    <div className="fixed-bottom" style={{"bottom":"1em"}}>
+    <React.Fragment>
+      <ToastContainer className="p-3" position="top-center">
+            <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg={toastVariant}>
+              <Toast.Body>{scannerErrorMessage}</Toast.Body>
+            </Toast>
+          </ToastContainer>
+      <div className="fixed-bottom" style={{"bottom":"1em"}}>
         <div className="container-fluid">
-            <div id="reader" width="100%" />
+          <div id="reader" width="100%" />
             <nav class="navbar navbar-expand bg-light justify-content-between">
               <ul class="navbar-nav mx-auto text-center">
-                  <li class="nav-item active">
-                    <Link className="nav-link" to="/">Store</Link>
-                  </li>
-                  <li class="nav-item">
-                    {toggleVisibility ? (
-                        <React.Fragment>
-                            <a class="nav-link" onClick={() => {
-                              handleClickAdvanced();
-                            }}>Scan</a>
-                        </React.Fragment>
-                    ) : (
-                        <a class="nav-link" onClick={() => {
-                          handleStop();
-                          setToggleVisibility(!toggleVisibility);
-                      }}>Stop</a>
-                    )}
-                  </li>
-                  <li class="nav-item">
-                    <Link className="nav-link" to="/cart">Cart <Badge pill bg="danger">
-                      {cart.cart.length}
-                    </Badge></Link>
-                  </li>
-                  <li class="nav-item">
-                    <Link className="nav-link" to="/config">Config
-                    {(config.terminalId===null || config.posId===null || config.currency===null)?
-                        <Badge pill bg="warning">
-                          !
-                        </Badge>:
-                        <Badge pill bg="success">
-                          ok
-                        </Badge>
-                      }
-                    </Link>
-                  </li>
-                </ul>
-            </nav>
-        </div>
+                <li class="nav-item active">
+                  <Link className="nav-link" to="/">Store</Link>
+                </li>
+                <li class="nav-item">
+                  {toggleVisibility ? (
+                      <React.Fragment>
+                          <a class="nav-link" onClick={() => {
+                            handleClickAdvanced();
+                          }}>Scan</a>
+                      </React.Fragment>
+                  ) : (
+                      <a class="nav-link" onClick={() => {
+                        handleStop();
+                        setToggleVisibility(!toggleVisibility);
+                    }}>Stop</a>
+                  )}
+                </li>
+                <li class="nav-item">
+                  <Link className="nav-link" to="/cart">Cart <Badge pill bg="danger">
+                    {cart.cart.length}
+                  </Badge></Link>
+                </li>
+                <li class="nav-item">
+                  <Link className="nav-link" to="/config">Config
+                  {(config.terminalId===null || config.posId===null || config.currency===null)?
+                      <Badge pill bg="warning">
+                        !
+                      </Badge>:
+                      <Badge pill bg="success">
+                        ok
+                      </Badge>
+                    }
+                  </Link>
+                </li>
+              </ul>
+          </nav>
       </div>
+    </div>
+    </React.Fragment>
+
     // <div style={{ position: "relative" }}>
     //   <div id="reader" width="100%" />
     // </div>

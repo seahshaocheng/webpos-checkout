@@ -13,15 +13,20 @@ export const Config = () => {
     const [posId,setPosId] = useState(null);
     const [currency,setCurrency] = useState(null);
  
+    useEffect(()=>{
+        setCurrency(config.currency);
+        setTerminalId(config.terminalId);
+        setPosId(config.posId);
+    },[]);
 
-    const local_saveConfig = () =>{
+    const local_saveConfig = (e) =>{
         let changedConfig = {
             terminalId,
             posId,
             currency
         }
         dispatch(saveConfig(changedConfig))
-        navigate('/cart');
+        //navigate('/cart');
     }
 
     return(
@@ -30,7 +35,7 @@ export const Config = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Terminal ID</Form.Label>
                     <Form.Control type="text" 
-                        value={config.terminalId}
+                        value={terminalId}
                         onChange = {(e) => setTerminalId(e.target.value) } />
                     <Form.Text className="text-muted">
                         Enter the serial number of the terminal this POS is connecting to
@@ -39,7 +44,7 @@ export const Config = () => {
                 <Form.Group className="mb-3" >
                     <Form.Label>POS ID</Form.Label>
                     <Form.Control type="text" 
-                        value={config.posId}
+                        value={posId}
                         onChange = {(e) => setPosId(e.target.value) }/>
                     <Form.Text className="text-muted">
                         Enter something to uniquely identify this machine
@@ -48,7 +53,7 @@ export const Config = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Currency</Form.Label>
                     <Form.Control type="text" 
-                        value={config.currency}
+                        value={currency}
                         onChange = {(e) => setCurrency(e.target.value) }/>
                     <Form.Text className="text-muted">
                         Enter ISO code of the currency e.g: (SGD,JPY)
