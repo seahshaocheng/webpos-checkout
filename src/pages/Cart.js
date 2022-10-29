@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from "react";
-import {Alert, Spinner, Button, Modal} from "react-bootstrap";
+import {Alert, Spinner, Button, Modal, Form} from "react-bootstrap";
 import { clearCart } from "../app/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,6 +15,8 @@ export const Cart = () => {
     const [paymentResultTitle,setpaymentResultTitle] = useState(null);
     const [paymentSubTitle,setPaymentSubTitle] = useState(null);
     const [paymentResultBody,setpaymentResultBody] = useState(null);
+    const [emailReceiptSwtich,setEmailReceiptSwtich] = useState(false);
+    const [customerEmail,setCustomerEmail] = useState(null);
 
     const calculateCartTotal = () => {
         return cart.total/Math.pow(10,cart.totalPrecision);
@@ -41,6 +43,25 @@ export const Cart = () => {
                     setPaymentSubTitle("Transaction ID:")
                     setpaymentResultBody(terminalResponse.PaymentResponse.POIData.POITransactionID.TransactionID)
                     setPaymentResultmodalButtonVariant("success");
+
+                    if(emailReceiptSwtich){
+                        let items = [];
+                        let total = config.currency+" "+cart.total/Math.pow(10,cart.totalPrecision);
+                        cart.cart.map((data, i)=>{
+                            let item = {
+                                text:data.title,
+                                image:data.image,
+                                price:config.currency+" "+data.gross/Math.pow(10,data.price.precision)
+                            }
+                            items.push(item);
+                        });
+                        let orderData = {
+                            tenderReference:terminalResponse.PaymentResponse.POIData.POITransactionID.TransactionID,
+                            items
+                        }
+                        emailReceipt(orderData,total);
+                    }
+
                 break;
                 case "Failure":
                     setPaymentResultImage("failed");
@@ -66,6 +87,10 @@ export const Cart = () => {
         calculateCartTotal();
     }
 
+    const handleEmailSwitchToggle = () => {
+        setEmailReceiptSwtich(!emailReceiptSwtich);
+    }
+
     const makePayment = async () =>{
         console.log("clicked");
         setPaymentButtonDisabled(true);
@@ -82,12 +107,29 @@ export const Cart = () => {
             })
         });
         let responseBody = await response.json();
-        console.log(responseBody);
         if(responseBody.SaleToPOIResponse!==undefined){
             let paymentResponse= responseBody.SaleToPOIResponse;
             handlePaymentResponse(paymentResponse);
         }
         //do handling of event
+    }
+
+    const emailReceipt = async (orderData,total) => {
+        let emaildata = {
+            customerEmail,
+            orderData,
+            total
+        }
+        let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
+        const response = await fetch(`${server}/emailReceipt`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+              },
+            body:JSON.stringify(emaildata)
+        });
+        let responseBody = await response.json();
+        console.log(responseBody);
     }
 
     return(
@@ -120,6 +162,21 @@ export const Cart = () => {
                             </tr>
                         </tfoot>
                         </table>
+                        <Form.Check 
+                                type="switch"
+                                id="emailReceipt"
+                                label="Send customer a receipt"
+                                checked={emailReceiptSwtich}
+                                onChange={handleEmailSwitchToggle}
+                        />
+                        {
+                            (emailReceiptSwtich)?
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>setCustomerEmail(e.target.value)} />
+                            </Form.Group>
+                            :""
+                        }
                 </div>
             ) : 
             <Alert variant='dark'>
@@ -163,7 +220,7 @@ export const Cart = () => {
             </div>
             <Modal
                 show = {paymentResultModalDisplay}
-                size="sm"
+                size="md"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 >

@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from "react";
-import {Alert, Form} from "react-bootstrap";
+import {Alert, Form, Button, InputGroup} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { saveConfig } from "../app/configSlice";
 import {useNavigate} from "react-router-dom";
@@ -12,11 +12,28 @@ export const Config = () => {
     const [terminalId,setTerminalId] =  useState(null);
     const [posId,setPosId] = useState(null);
     const [currency,setCurrency] = useState(null);
- 
+    const [availableTerminals, setAvailableTerminals] = useState([]);
+    
+    const fetchTerminal = async() => {
+        let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
+        const response = await fetch(`${server}/fetchTerminals`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        let responseBody = await response.json();
+        console.log(responseBody);
+
+        setAvailableTerminals(responseBody);
+        return responseBody;
+    }
+
     useEffect(()=>{
         setCurrency(config.currency);
         setTerminalId(config.terminalId);
         setPosId(config.posId);
+        fetchTerminal();
     },[]);
 
     const local_saveConfig = (e) =>{
@@ -31,12 +48,23 @@ export const Config = () => {
 
     return(
         <React.Fragment>
-            <Form>
-                <Form.Group className="mb-3">
+            <Form style={{paddingBottom:"10em"}}>
+                <Form.Group as="column" className="mb-3">
                     <Form.Label>Terminal ID</Form.Label>
-                    <Form.Control type="text" 
-                        value={terminalId}
-                        onChange = {(e) => setTerminalId(e.target.value) } />
+                    <InputGroup className="mb-3">
+                        <Form.Select onChange = {(e) => setTerminalId(e.target.value) }>
+                            {
+                                availableTerminals.map((terminal,i)=>{
+                                    return(
+                                        <option>{terminal.POIID}</option>
+                                    )
+                                })
+                            }
+                            </Form.Select>
+                        <Button variant="outline-secondary" onClick = {() =>fetchTerminal }>
+                            Refresh
+                        </Button>
+                    </InputGroup>
                     <Form.Text className="text-muted">
                         Enter the serial number of the terminal this POS is connecting to
                     </Form.Text>
@@ -59,17 +87,19 @@ export const Config = () => {
                         Enter ISO code of the currency e.g: (SGD,JPY)
                     </Form.Text>
                 </Form.Group>
+                <Form.Group>
+                    <div style={{"bottom":"5em"}}>
+                        <div className="d-grid gap-2 col-12 mx-auto" style={{"marginTop":"2em"}}>
+                            <button
+                                className="btn btn-primary"
+                                onClick={(e)=>local_saveConfig(e)}
+                                >
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </Form.Group>
             </Form>
-            <div className="fixed-bottom" style={{"bottom":"5em"}}>
-                <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
-                    <button
-                        className="btn btn-primary"
-                        onClick={(e)=>local_saveConfig(e)}
-                        >
-                        Save
-                    </button>
-                </div>
-            </div>
         </React.Fragment>
     )
 };

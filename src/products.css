@@ -2,6 +2,8 @@
     display: flex;
     margin: -4px;
     list-style-type:none;
+    padding:0px;
+    padding-bottom: 8em;
 }
 @media (min-width: 768px) {
     .products__list {
@@ -32,9 +34,7 @@
         min-width: 25%;
     }
 }
-.products__list__list-item:last-child {
-    display: none;
-}
+
 @media (min-width: 768px) {
     .products__list__list-item:last-child {
         display: block;

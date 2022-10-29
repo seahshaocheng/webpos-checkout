@@ -31,15 +31,15 @@ export const Catalog = () => {
     return(
         <React.Fragment>
             {cart.products?.length > 0 ? (
-                <ul class="products__list">
+                <ul class="products__list d-flex align-content-stretch flex-wrap">
                     {cart.products?.map((data, i) => (
-                            <li class="products__list__list-item">
-                                <a class="products__list__list-item__item" onClick = {() => handleSelectedProduct(
+                            <li className="products__list__list-item ">
+                                <a className="products__list__list-item__item" onClick = {() => handleSelectedProduct(
                                     data
                                 )}>
-                                    <img src={data.image} alt="Polo shirt" class="lazyload-image lazyload-image--loaded products__list__list-item__item__image"/>
-                                    <p class="products__list__list-item__item__title">{data.title}</p>
-                                    <p class="products__list__list-item__item__price">
+                                    <img src={data.image} alt="Polo shirt" className="lazyload-image lazyload-image--loaded products__list__list-item__item__image"/>
+                                    <p className="products__list__list-item__item__title">{data.title}</p>
+                                    <p className="products__list__list-item__item__price">
                                         {config.currency}
                                         {data.price.value/Math.pow(10,data.price.precision)}
                                     </p>
