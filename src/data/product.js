@@ -1,29 +1,29 @@
 const products = [
     {
-        "id": "SGMERCEVENT-1", 
-        "title": "Polo T-Shirt",
+        "id": "Mug", 
+        "title": "Mug",
         "image":"/images/default/polo-tee.png",
         "price": {
-            value:9999,
-            precision:2
+            value:100,
+            precision:0
         }
     },
     {
-        "id": "SGMERCEVENT-2", 
-        "title": "Sunglasses (Error Test Case)",
+        "id": "Waffles", 
+        "title": "Waffles",
         "image":"/images/default/sunglasses.png",
         "price": {
-            value:10504,
-            precision:2
+            value:100,
+            precision:0
         }
     },
     {
-        "id": "SGMERCEVENT-3", 
-        "title": "Headphones (Refused Test Case)",
+        "id": "Travel Adaptor", 
+        "title": "Travel Adaptor",
         "image":"/images/default/headphones.png",
         "price": {
-            value:3505,
-            precision:2
+            value:100,
+            precision:0
         }
     },
 ]
