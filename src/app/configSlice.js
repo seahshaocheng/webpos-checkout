@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const slice = createSlice({
     name: "configuration",
     initialState: {
+        store:null,
         terminalId:null,
         posId:null,
         currency:null,
@@ -10,6 +11,7 @@ export const slice = createSlice({
     reducers:{
         act_saveConfig: (state, action) => {
             console.log(action.payload);
+            state.store=action.payload.store;
             state.terminalId=action.payload.terminalId;
             state.posId=action.payload.posId;
             state.currency=action.payload.currency;

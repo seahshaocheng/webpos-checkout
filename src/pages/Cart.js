@@ -195,7 +195,7 @@ export const Cart = () => {
                             >
                                 {
                                     !paymentButtonDisabled?
-                                        "Pay "+calculateCartTotal()
+                                        "Pay "+config.currency+" "+calculateCartTotal()
                                     :
                                     <React.Fragment>
                                         <Spinner animation="border" size="sm" role="status" as="span" variant="light" />     

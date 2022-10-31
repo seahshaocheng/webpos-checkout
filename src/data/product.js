@@ -2,7 +2,7 @@ const products = [
     {
         "id": "Mug", 
         "title": "Mug",
-        "image":"/images/default/polo-tee.png",
+        "image":"/images/jp_event/mug.jpeg",
         "price": {
             value:100,
             precision:0
@@ -11,7 +11,7 @@ const products = [
     {
         "id": "Waffles", 
         "title": "Waffles",
-        "image":"/images/default/sunglasses.png",
+        "image":"/images/jp_event/cookies.jpeg",
         "price": {
             value:100,
             precision:0
@@ -20,7 +20,7 @@ const products = [
     {
         "id": "Travel Adaptor", 
         "title": "Travel Adaptor",
-        "image":"/images/default/headphones.png",
+        "image":"/images/jp_event/traveladaptor.jpeg",
         "price": {
             value:100,
             precision:0
