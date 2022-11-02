@@ -13,7 +13,7 @@ const products = [
         "title": "Waffles",
         "image":"/images/jp_event/cookies.jpg",
         "price": {
-            value:100,
+            value:200,
             precision:0
         }
     },
@@ -22,7 +22,7 @@ const products = [
         "title": "Travel Adaptor",
         "image":"/images/jp_event/traveladaptor.jpg",
         "price": {
-            value:100,
+            value:300,
             precision:0
         }
     },
