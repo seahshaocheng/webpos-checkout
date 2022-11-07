@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key : 'root',
-  version:1,
+  version:3,
   storage,
   blacklist:['cart']
 }

@@ -13,8 +13,22 @@ export const Config = () => {
     const [terminalId,setTerminalId] =  useState(null);
     const [posId,setPosId] = useState(null);
     const [currency,setCurrency] = useState(null);
+    const [customerLoyalty,setCustomerLoyalty] = useState(null);
     const [availableTerminals, setAvailableTerminals] = useState([]);
     const [availableStores,setAvailableStores] = useState([]);
+    
+    useEffect(()=>{
+        console.log("effecting");
+        setStore(config.store);
+        setCurrency(config.currency);
+        setTerminalId(config.terminalId);
+        setPosId(config.posId);
+        setCustomerLoyalty(config.customerLoyalty);
+        fetchStore();
+        if(config.store!==null){
+            fetchTerminal(config.store)
+        }
+    },[]);
     
     const fetchTerminal = async(store) => {
         console.log("fetching terminal");
@@ -39,6 +53,7 @@ export const Config = () => {
     }
 
     const fetchStore = async () => {
+        console.log("fetching store");
         let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
         const response = await fetch(`${server}/fetchStores`, {
             method: "POST",
@@ -63,29 +78,23 @@ export const Config = () => {
         fetchTerminal(e);
     }
 
-    useEffect(()=>{
-        setStore(config.store);
-        setCurrency(config.currency);
-        setTerminalId(config.terminalId);
-        setPosId(config.posId);
-        fetchStore();
-        if(config.store!==null){
-            fetchTerminal(config.store)
-        }
-    },[]);
-
     const local_saveConfig = (e) =>{
         e.preventDefault();
         let changedConfig = {
             store,
             terminalId,
             posId,
-            currency
+            currency,
+            customerLoyalty
         }
         console.log(changedConfig)
         dispatch(saveConfig(changedConfig))
         //navigate('/cart');
     }
+
+    const handleCustomerLoyaltySwitch = (e)=>{
+        setCustomerLoyalty(!customerLoyalty);
+    } 
 
     return(
         <React.Fragment>
@@ -103,7 +112,7 @@ export const Config = () => {
                                 })
                             }
                             </Form.Select>
-                        <Button variant="outline-secondary" onClick = {() =>fetchStore }>
+                        <Button variant="outline-secondary" onClick = {() => fetchStore() }>
                             Refresh
                         </Button>
                     </InputGroup>
@@ -125,7 +134,7 @@ export const Config = () => {
                                 })
                             }
                             </Form.Select>
-                        <Button variant="outline-secondary" onClick = {() =>fetchTerminal }>
+                        <Button variant="outline-secondary" onClick = {() =>fetchTerminal() }>
                             Refresh
                         </Button>
                     </InputGroup>
@@ -150,6 +159,15 @@ export const Config = () => {
                     <Form.Text className="text-muted">
                         Enter ISO code of the currency e.g: (SGD,JPY)
                     </Form.Text>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Check 
+                                type="switch"
+                                id="emailReceipt"
+                                label="Perform Loyalty Flow"
+                                checked={customerLoyalty}
+                                onChange={handleCustomerLoyaltySwitch}
+                        />
                 </Form.Group>
                 <Form.Group>
                     <div style={{"bottom":"5em"}}>

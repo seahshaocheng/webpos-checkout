@@ -95,7 +95,13 @@ export const Cart = () => {
         console.log("clicked");
         setPaymentButtonDisabled(true);
         let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
-        const response = await fetch(`${server}/makePayment`, {
+        let serverEndpoint = "/makePayment";
+
+        if(config.customerLoyalty){
+            serverEndpoint = "/cardacq";
+        }
+
+        const response = await fetch(`${server}${serverEndpoint}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -103,6 +109,7 @@ export const Cart = () => {
             body:JSON.stringify({
                 terminalId:config.terminalId,
                 amount:cart.total/Math.pow(10,cart.totalPrecision),
+                posId:config.posId,
                 currency:config.currency
             })
         });
