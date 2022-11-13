@@ -97,8 +97,24 @@ export const Cart = () => {
         let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
         let serverEndpoint = "/makePayment";
 
+        
+
+        let paymentRequestData = {
+            terminalId:config.terminalId,
+            amount:cart.total/Math.pow(10,cart.totalPrecision),
+            posId:config.posId,
+            currency:config.currency
+        }
+
         if(config.customerLoyalty){
             serverEndpoint = "/cardacq";
+
+            if(config.mockLoyalty){
+                paymentRequestData.useMock=true;
+            }
+            else{
+                paymentRequestData.useMock=false;
+            }
         }
 
         const response = await fetch(`${server}${serverEndpoint}`, {
@@ -106,12 +122,7 @@ export const Cart = () => {
             headers: {
                 "Content-Type": "application/json",
               },
-            body:JSON.stringify({
-                terminalId:config.terminalId,
-                amount:cart.total/Math.pow(10,cart.totalPrecision),
-                posId:config.posId,
-                currency:config.currency
-            })
+            body:JSON.stringify(paymentRequestData)
         });
         let responseBody = await response.json();
         if(responseBody.SaleToPOIResponse!==undefined){

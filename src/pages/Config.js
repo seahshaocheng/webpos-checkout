@@ -14,6 +14,7 @@ export const Config = () => {
     const [posId,setPosId] = useState(null);
     const [currency,setCurrency] = useState(null);
     const [customerLoyalty,setCustomerLoyalty] = useState(null);
+    const [mockLoyalty,setMockLoyalty] = useState(null);
     const [availableTerminals, setAvailableTerminals] = useState([]);
     const [availableStores,setAvailableStores] = useState([]);
     
@@ -24,6 +25,7 @@ export const Config = () => {
         setTerminalId(config.terminalId);
         setPosId(config.posId);
         setCustomerLoyalty(config.customerLoyalty);
+        setMockLoyalty(config.mockLoyalty);
         fetchStore();
         if(config.store!==null){
             fetchTerminal(config.store)
@@ -85,7 +87,8 @@ export const Config = () => {
             terminalId,
             posId,
             currency,
-            customerLoyalty
+            customerLoyalty,
+            mockLoyalty
         }
         console.log(changedConfig)
         dispatch(saveConfig(changedConfig))
@@ -94,6 +97,10 @@ export const Config = () => {
 
     const handleCustomerLoyaltySwitch = (e)=>{
         setCustomerLoyalty(!customerLoyalty);
+    } 
+
+    const handleMockLoyalty = (e)=>{
+        setMockLoyalty(!mockLoyalty);
     } 
 
     return(
@@ -120,7 +127,7 @@ export const Config = () => {
                         Select the store for this POS
                     </Form.Text>
                 </Form.Group>
-                {(store!==null)?
+                {(store!==null && availableTerminals.length>0)?
                 <Form.Group className="mb-3">
                     <Form.Label>Terminal ID</Form.Label>
                     <InputGroup>
@@ -167,6 +174,15 @@ export const Config = () => {
                                 label="Perform Loyalty Flow"
                                 checked={customerLoyalty}
                                 onChange={handleCustomerLoyaltySwitch}
+                        />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Check 
+                                type="switch"
+                                id="useMock"
+                                label="Use Mock for Loyalty"
+                                checked={mockLoyalty}
+                                onChange={handleMockLoyalty}
                         />
                 </Form.Group>
                 <Form.Group>

@@ -8,6 +8,7 @@ export const slice = createSlice({
         posId:null,
         currency:null,
         customerLoyalty:null,
+        mockLoyalty:null
     },
     reducers:{
         act_saveConfig: (state, action) => {
@@ -17,6 +18,7 @@ export const slice = createSlice({
             state.posId=action.payload.posId;
             state.currency=action.payload.currency;
             state.customerLoyalty=action.payload.customerLoyalty;
+            state.mockLoyalty=action.payload.mockLoyalty;
         },
     }
 });
