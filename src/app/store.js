@@ -4,10 +4,12 @@ import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import cartReducer from "./cartSlice";
 import configReducer from "./configSlice";
+import paymentReducer from "./paymentSlice";
 
 const rootReducer = combineReducers({
   cart: cartReducer,
-  config:configReducer
+  config:configReducer,
+  payment:paymentReducer,
 });
 
 const persistConfig = {

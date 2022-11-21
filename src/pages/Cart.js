@@ -1,6 +1,7 @@
 import React, { useState , useEffect} from "react";
 import {Alert, Spinner, Button, Modal, Form} from "react-bootstrap";
 import { clearCart } from "../app/cartSlice";
+import {PaymentContainer} from "../pages/Checkout";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Cart = () => {
@@ -180,6 +181,7 @@ export const Cart = () => {
                             </tr>
                         </tfoot>
                         </table>
+                        <PaymentContainer/>
                         <Form.Check 
                                 type="switch"
                                 id="emailReceipt"
