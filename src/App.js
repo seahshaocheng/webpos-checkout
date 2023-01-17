@@ -5,6 +5,7 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import {Catalog} from './pages/Catalog';
 import {Cart} from './pages/Cart';
 import {Config} from './pages/Config';
+import {StatusContainer} from './pages/status/Status';
 import Scanner from "./components/scanner";
 
 import { addToCart } from "./app/cartSlice";
@@ -13,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import "./products.css";
 import 'bootstrap/dist/css/bootstrap.css';
+
 
 const App = () => {
 
@@ -47,6 +49,7 @@ const App = () => {
           <Route path="/" element={<Catalog/>}/>
           <Route path="/cart" element={<Cart/>}/>
           <Route path="/config" element={<Config/>}/>
+          <Route path="/status/:type" element={<StatusContainer/>}/>
         </Routes>
         <Scanner
         handleQuickResponse={handleQuickResponse}
