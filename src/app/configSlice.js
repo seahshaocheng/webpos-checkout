@@ -19,6 +19,7 @@ export const slice = createSlice({
             state.currency=action.payload.currency;
             state.customerLoyalty=action.payload.customerLoyalty;
             state.mockLoyalty=action.payload.mockLoyalty;
+            state.useEcomm = action.payload.useEcomm
         },
     }
 });

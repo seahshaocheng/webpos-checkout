@@ -15,6 +15,7 @@ export const Config = () => {
     const [currency,setCurrency] = useState(null);
     const [customerLoyalty,setCustomerLoyalty] = useState(null);
     const [mockLoyalty,setMockLoyalty] = useState(null);
+    const [useEcomm,setUseEcomm] = useState(null);
     const [availableTerminals, setAvailableTerminals] = useState([]);
     const [availableStores,setAvailableStores] = useState([]);
     
@@ -26,6 +27,7 @@ export const Config = () => {
         setPosId(config.posId);
         setCustomerLoyalty(config.customerLoyalty);
         setMockLoyalty(config.mockLoyalty);
+        setUseEcomm(config.useEcomm);
         fetchStore();
         if(config.store!==null){
             fetchTerminal(config.store)
@@ -88,7 +90,8 @@ export const Config = () => {
             posId,
             currency,
             customerLoyalty,
-            mockLoyalty
+            mockLoyalty,
+            useEcomm
         }
         console.log(changedConfig)
         dispatch(saveConfig(changedConfig))
@@ -102,6 +105,10 @@ export const Config = () => {
     const handleMockLoyalty = (e)=>{
         setMockLoyalty(!mockLoyalty);
     } 
+
+    const handleUseEcomm = (e) => {
+        setUseEcomm(!useEcomm);
+    }
 
     return(
         <React.Fragment>
@@ -127,28 +134,32 @@ export const Config = () => {
                         Select the store for this POS
                     </Form.Text>
                 </Form.Group>
-                {(store!==null && availableTerminals.length>0)?
+               
                 <Form.Group className="mb-3">
                     <Form.Label>Terminal ID</Form.Label>
-                    <InputGroup>
-                        <Form.Select onChange = {(e) => setTerminalId(e.target.value) }>
-                            <option>{(terminalId===null)?"Please select terminal":terminalId}</option>
-                            {
-                                availableTerminals.map((terminal,i)=>{
-                                    return(
-                                        <option>{terminal.POIID}</option>
-                                    )
-                                })
-                            }
-                            </Form.Select>
-                        <Button variant="outline-secondary" onClick = {() =>fetchTerminal() }>
-                            Refresh
-                        </Button>
-                    </InputGroup>
-                    <Form.Text className="text-muted">
-                        Select terminal for POS to connect
-                    </Form.Text>
-                </Form.Group>:""}
+                    {(store!==null && availableTerminals.length>0)?
+                        <React.Fragment>
+                                <InputGroup>
+                                <Form.Select onChange = {(e) => setTerminalId(e.target.value) }>
+                                    <option>{(terminalId===null)?"Please select terminal":terminalId}</option>
+                                    {
+                                        availableTerminals.map((terminal,i)=>{
+                                            return(
+                                                <option>{terminal.POIID}</option>
+                                            )
+                                        })
+                                    }
+                                    </Form.Select>
+                                <Button variant="outline-secondary" onClick = {() =>fetchTerminal() }>
+                                    Refresh
+                                </Button>
+                            </InputGroup>
+                            <Form.Text className="text-muted">
+                                Select terminal for POS to connect
+                            </Form.Text>
+                        </React.Fragment>
+                    :"No terminals"}
+                </Form.Group>
                 <Form.Group className="mb-3" >
                     <Form.Label>POS ID</Form.Label>
                     <Form.Control type="text" 
@@ -174,6 +185,15 @@ export const Config = () => {
                                 label="Perform Loyalty Flow"
                                 checked={customerLoyalty}
                                 onChange={handleCustomerLoyaltySwitch}
+                        />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Check 
+                                type="switch"
+                                id="useEcom"
+                                label="Use Demo for ECOM"
+                                checked={useEcomm}
+                                onChange={handleUseEcomm}
                         />
                 </Form.Group>
                 <Form.Group>

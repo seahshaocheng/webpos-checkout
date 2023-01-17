@@ -181,7 +181,10 @@ export const Cart = () => {
                             </tr>
                         </tfoot>
                         </table>
-                        <PaymentContainer/>
+                        {
+                            (config.useEcomm)?
+                            <PaymentContainer/>:""
+                        }
                         <Form.Check 
                                 type="switch"
                                 id="emailReceipt"
@@ -207,33 +210,34 @@ export const Cart = () => {
                 <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
                 {(cart.total>0)?
                     <React.Fragment>
+                        {
+                            (!config.useEcomm)?
+                                <Button
+                                    variant ="primary"
+                                    size="lg"
+                                    onClick={() => makePayment()}
+                                    disabled={paymentButtonDisabled}
+                                    >
+                                        {
+                                            !paymentButtonDisabled?
+                                                "Pay "+config.currency+" "+calculateCartTotal()
+                                            :
+                                            <React.Fragment>
+                                                <Spinner animation="border" size="sm" role="status" as="span" variant="light" />     
+                                                <span>  Waiting... </span> 
+                                            </React.Fragment>
+                                        }
+                                </Button>:
+                                ""
+                        }
                         <Button
-                            variant ="primary"
-                            size="lg"
-                            onClick={() => makePayment()}
-                            disabled={paymentButtonDisabled}
-                            >
-                                {
-                                    !paymentButtonDisabled?
-                                        "Pay "+config.currency+" "+calculateCartTotal()
-                                    :
-                                    <React.Fragment>
-                                        <Spinner animation="border" size="sm" role="status" as="span" variant="light" />     
-                                        <span>  Waiting... </span> 
-                                    </React.Fragment>
-                                }
-                            
-                        </Button>
-                            <Button
                             variant ="secondary"
                             size="lg"
                             onClick={() => handleClosePaymentResult()}
-                            disabled={paymentButtonDisabled}
-                            >
+                            disabled={paymentButtonDisabled}>
                                Clear Cart
                         </Button>
                     </React.Fragment>
-                    
                     :""
                 }
                 </div>
