@@ -33,7 +33,7 @@ const App = () => {
     <React.Fragment>
       <header id="header" className="text-center" style={{"marginTop":"30px","marginBottom":"50px"}}>
         <Link to="/">
-          <img src="/images/fairprice.png" style={{width:"10em"}} alt="" />
+          <img src="/images/mystore-logo.svg" style={{width:"10em"}} alt="" />
         </Link>
         <div>
           {(config.terminalId===null || config.posId===null || config.currency===null)?
