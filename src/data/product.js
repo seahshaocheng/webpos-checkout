@@ -4,7 +4,7 @@ const products = [
         "title": "Giraffee Feeding",
         "image":"/images/mandai/giraffee-feeding.jpg",
         "price": {
-            value:100,
+            value:1,
             precision:0
         }
     },
@@ -13,7 +13,7 @@ const products = [
         "title": "Wild Animal Carousel",
         "image":"/images/mandai/wild-animal-fair.jpg",
         "price": {
-            value:200,
+            value:2,
             precision:0
         }
     },
@@ -22,7 +22,7 @@ const products = [
         "title": "Zoo Keeper Day",
         "image":"/images/mandai/zoo-keeper-day.jpg",
         "price": {
-            value:300,
+            value:3,
             precision:0
         }
     },
