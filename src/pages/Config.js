@@ -18,6 +18,7 @@ export const Config = () => {
     const [useEcomm,setUseEcomm] = useState(null);
     const [availableTerminals, setAvailableTerminals] = useState([]);
     const [availableStores,setAvailableStores] = useState([]);
+    const [errorMessages,setErrorMessages] = useState([]);
     
     useEffect(()=>{
         console.log("effecting");
@@ -32,6 +33,7 @@ export const Config = () => {
         if(config.store!==null){
             fetchTerminal(config.store)
         }
+        console.log("end effecting")
     },[]);
     
     const fetchTerminal = async(store) => {
@@ -52,7 +54,16 @@ export const Config = () => {
         });
         let responseBody = await response.json();
 
-        setAvailableTerminals(responseBody);
+        console.log("the response body");
+        console.log(responseBody);
+        if (responseBody.status===undefined){
+            setAvailableTerminals(responseBody);
+        }
+        else{
+            let stateErrorMessages = errorMessages; 
+            stateErrorMessages.push("Error while fetching terminals: "+responseBody.code+responseBody.message);
+            setErrorMessages(stateErrorMessages);
+        }
         return responseBody;
     }
 
@@ -66,8 +77,17 @@ export const Config = () => {
             }
         });
         let responseBody = await response.json();
-
-        setAvailableStores(responseBody);
+        console.log("the store response body")
+        console.log(responseBody);
+        if (responseBody.status===undefined){
+            setAvailableStores(responseBody);
+        }
+        else{
+            console.log("error");
+            let stateErrorMessages = errorMessages; 
+            stateErrorMessages.push("Error while fetching store: "+responseBody.code+responseBody.message);
+            setErrorMessages(stateErrorMessages);
+        }
         return responseBody;
     }
 
@@ -112,6 +132,14 @@ export const Config = () => {
 
     return(
         <React.Fragment>
+            {(errorMessages.length>0)?
+            <div className="alert alert-error">
+                <ul>
+                    {errorMessages.map((errormessage,i)=>{
+                       return(<li>{errormessage}</li>) 
+                    })}
+                </ul>
+            </div>:""}
             <Form style={{paddingBottom:"10em"}}>
                 <Form.Group className="mb-3">
                     <Form.Label>Store</Form.Label>
@@ -158,7 +186,7 @@ export const Config = () => {
                                 Select terminal for POS to connect
                             </Form.Text>
                         </React.Fragment>
-                    :"No terminals"}
+                    :<div className="alert alert-warning">"No terminals"</div>}
                 </Form.Group>
                 <Form.Group className="mb-3" >
                     <Form.Label>POS ID</Form.Label>

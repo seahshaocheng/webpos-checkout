@@ -4,9 +4,12 @@ import { clearCart } from "../app/cartSlice";
 import {PaymentContainer} from "../pages/Checkout";
 import { useDispatch, useSelector } from "react-redux";
 
+import { initiateCheckout,clearSessiondata,updatePaymentRequestData } from "../app/paymentSlice";
+
 export const Cart = () => {
     const cart = useSelector((state) => state.cart);
     const config = useSelector((state) => state.config);
+    const payment = useSelector((state) => state.payment);
     const dispatch = useDispatch();
 
     const [paymentButtonDisabled,setPaymentButtonDisabled] =  useState(false);
@@ -60,7 +63,7 @@ export const Cart = () => {
                             tenderReference:terminalResponse.PaymentResponse.POIData.POITransactionID.TransactionID,
                             items
                         }
-                        emailReceipt(orderData,total);
+                        //emailReceipt(orderData,total);
                     }
 
                 break;
@@ -85,11 +88,21 @@ export const Cart = () => {
         setPaymentResultModalDisplay(false);
         setPaymentButtonDisabled(false);
         dispatch(clearCart());
+        dispatch(clearSessiondata());
         calculateCartTotal();
     }
 
-    const handleEmailSwitchToggle = () => {
-        setEmailReceiptSwtich(!emailReceiptSwtich);
+    const initializeCheckout = () => {
+        dispatch(initiateCheckout(payment.adyenenv,payment.region));
+        setEmailReceiptSwtich(true);
+    }
+
+    const handleContinueToCheckout = () => {
+        if(!emailReceiptSwtich){
+            return(<Button variant="outline-secondary" onClick = {() => initializeCheckout() }>
+            Continue
+        </Button>)
+        }
     }
 
     const makePayment = async () =>{
@@ -98,13 +111,12 @@ export const Cart = () => {
         let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
         let serverEndpoint = "/makePayment";
 
-        
-
         let paymentRequestData = {
             terminalId:config.terminalId,
             amount:cart.total/Math.pow(10,cart.totalPrecision),
             posId:config.posId,
-            currency:config.currency
+            currency:config.currency,
+            shopperEmail:payment.paymentRequestData.shopperEmail
         }
 
         if(config.customerLoyalty){
@@ -131,24 +143,6 @@ export const Cart = () => {
             handlePaymentResponse(paymentResponse);
         }
         //do handling of event
-    }
-
-    const emailReceipt = async (orderData,total) => {
-        let emaildata = {
-            customerEmail,
-            orderData,
-            total
-        }
-        let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
-        const response = await fetch(`${server}/emailReceipt`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-              },
-            body:JSON.stringify(emaildata)
-        });
-        let responseBody = await response.json();
-        console.log(responseBody);
     }
 
     return(
@@ -181,24 +175,13 @@ export const Cart = () => {
                             </tr>
                         </tfoot>
                         </table>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>dispatch(updatePaymentRequestData({key:"shopperEmail",value:e.target.value}))} />
+                        </Form.Group>
                         {
                             (config.useEcomm)?
                             <PaymentContainer/>:""
-                        }
-                        <Form.Check 
-                                type="switch"
-                                id="emailReceipt"
-                                label="Send customer a receipt"
-                                checked={emailReceiptSwtich}
-                                onChange={handleEmailSwitchToggle}
-                        />
-                        {
-                            (emailReceiptSwtich)?
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>setCustomerEmail(e.target.value)} />
-                            </Form.Group>
-                            :""
                         }
                 </div>
             ) : 
@@ -228,7 +211,7 @@ export const Cart = () => {
                                             </React.Fragment>
                                         }
                                 </Button>:
-                                ""
+                                handleContinueToCheckout()
                         }
                         <Button
                             variant ="secondary"

@@ -1,6 +1,8 @@
-import React from "react";
-import {  useSelector } from "react-redux";
+import React , { useEffect }from "react";
+import {  useSelector, useDispatch } from "react-redux";
 import { Link, useParams, useLocation } from "react-router-dom";
+
+import { clearSessiondata } from "../../app/paymentSlice";
 
 export const Message = ({ type, reason }) => {
   let msg, img;
@@ -37,9 +39,15 @@ export const Message = ({ type, reason }) => {
 };
 
 export const StatusContainer = () => {
+  const dispatch = useDispatch();
   const payment = useSelector(state => state.payment);
   console.log("payment response");
   console.log(payment.paymentRes);
+
+  useEffect(() => {
+    dispatch(clearSessiondata());
+  }, [dispatch]);
+
   let { type , reference} = useParams();
   let query = new URLSearchParams(useLocation().search);
   let reason = query ? query.get("reason") : "";
