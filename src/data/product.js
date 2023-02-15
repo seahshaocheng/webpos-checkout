@@ -1,26 +1,26 @@
 const products = [
     {
-        "id": "giraffee-feeding", 
-        "title": "Giraffee Feeding",
-        "image":"/images/mandai/giraffee-feeding.jpg",
+        "id": "ex1", 
+        "title": "Ex1",
+        "image":"/images/ngs/product1.jpg",
         "price": {
             value:1,
             precision:0
         }
     },
     {
-        "id": "wild-animal", 
-        "title": "Wild Animal Carousel",
-        "image":"/images/mandai/wild-animal-fair.jpg",
+        "id": "ex2", 
+        "title": "Ex2",
+        "image":"/images/ngs/product2.jpg",
         "price": {
             value:2,
             precision:0
         }
     },
     {
-        "id": "ZooKeeperDay", 
-        "title": "Zoo Keeper Day",
-        "image":"/images/mandai/zoo-keeper-day.jpg",
+        "id": "ex3", 
+        "title": "Ex3",
+        "image":"/images/ngs/product3.jpg",
         "price": {
             value:3,
             precision:0
