@@ -5,60 +5,27 @@ export const slice = createSlice({
   name: "payment",
   initialState: {
     checkoutInitiated:false,
+    initateSession:false,
     error: "",
+    session:null,
     sessionData: null,
     dropinInitiated:false,
     adyenenv:"TEST",
     region:"DEFAULT",
     checkoutVersion:"v68",
     countryCode:"SG",
-    shopperReference:null,
-    allowDefineRPM:false,
-    allowSwitchEnv:true,
-    availableRegions:[
-      "DEFAULT","APSE","US","AU"
-    ],
-    availableCheckoutVersion:[
-      "v69","v68","v67","v66","v65","v64","v53","v52","v51","v50","v49","v46","v41"
-    ],
-    reference: null,
-    paymentMethodsRes:null,
-    paymentRes:null,
-    paymentDetailsRes:null,
-    recurringChargeRes:null,
+    paymentDataStoreRes: null,
     paymentRequestData:{
-        "merchantAccount": "PME_POS_SG",
-        "amount": {
-          "value": 10,
-          "currency": "SGD"
-        },
-        "returnUrl": window.location.origin+"/redirect",
-        "reference": "MarkDanielNewDemo_"+moment.utc().format("YYYYMMDDhhmmss"),
-        "channel":"web",
-        "shopperInteraction":"Ecommerce",
-        "storePaymentMethod":false
-      },
-    subscriptionRequestData:{
       "merchantAccount": process.env.REACT_APP_MERCHANT_ACCOUNT,
+      "countryCode":"SG",
       "amount": {
-        "value": 6900,
+        "value": 10,
         "currency": "SGD"
       },
-      "paymentMethod":{
-        "type":"scheme",
-        "storedPaymentMethodId":"8416444173445612"
-      },
-      "reference": "MarkSubscriptionDemo1_"+moment.utc().format("YYYYMMDDhhmmss"),
-      "shopperInteraction": "ContAuth",
-      "recurringProcessingModel": "Subscription",
-      "shopperReference":"MarkSubscriptionDemo",
+      "shopperInteraction":"Ecommerce",
       "returnUrl": window.location.origin+"/redirect",
-      "countryCode": "SG",
-      "channel":"web",
     },
-    paymentDataStoreRes: null,
     config: {
-      storePaymentMethod: true,
       paymentMethodsConfiguration: {
         ideal: {
           showImage: true,
@@ -126,6 +93,7 @@ export const slice = createSlice({
       }
     },
     updatePaymentRequestData:(state,action)=>{
+      console.log(action);
       state.paymentRequestData[action.payload.key] = action.payload.value;
     },
     updatePaymentAmount :(state,action)=>{
@@ -228,100 +196,34 @@ export const slice = createSlice({
     updateCheckoutStatus:(state,action) => {
       console.log("update checkout state "+action.payload)
       state.checkoutInitiated=action.payload;
+    },
+    clearSessiondata:(state,action) => {
+      console.log("update checkout state "+action.payload);
+      state.session = null
+    },
+    updateLoadCheckout:(state,action) =>  {
+      console.log("update checkout state "+action.payload);
+      state.initateSession = action.payload
     }
   },
 });
 
-export const { paymentSession, paymentDataStore, updateAdditionalData, updatePaymentRequestData, paymentMethods,payments,paymentDetails,updateAdyenEnviornment,updateRegion,recurringCharge,updatePaymentMethodConfig,updateShopperReference,updatePaymentAmount,includeMetaData, updateCountryCode, updateCheckoutVersion,updateCheckoutStatus} = slice.actions;
+export const { updateLoadCheckout, clearSessiondata, paymentSession, paymentDataStore, updateAdditionalData, updatePaymentRequestData, paymentMethods,payments,paymentDetails,updateAdyenEnviornment,updateRegion,recurringCharge,updatePaymentMethodConfig,updateShopperReference,updatePaymentAmount,includeMetaData, updateCountryCode, updateCheckoutVersion,updateCheckoutStatus} = slice.actions;
 
 export const initiateCheckout = (adyenenv,region) => async (dispatch,getState) => {
-  console.log("initating");
   let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
-
+  console.log("session request");
+  let paymentRequest = getState().payment.paymentRequestData;
+  console.log(paymentRequest)
   const response = await fetch(`${server}/sessions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body:JSON.stringify(getState().payment.paymentRequestData)
+    body:JSON.stringify(paymentRequest)
   });
   dispatch(paymentSession([await response.json(), response.status]));
 };
-
-export const getPaymentMethods = (adyenenv,region) => async (dispatch,getState) => {
-  console.log("initating");
-  let paymentMethodRequest = {
-    "merchantAccount": process.env.REACT_APP_MERCHANT_ACCOUNT,
-    "countryCode":getState().payment.countryCode
-  };  
-
-  if(getState().payment.shopperReference!==null){
-    paymentMethodRequest.shopperReference = getState().payment.shopperReference
-  }
-
-  let checkoutVersion = getState().payment.checkoutVersion;
-
-  const response = await fetch(`${process.env.REACT_APP_MERCHANT_SERVER_URL}/adyen/paymentMethods`, {
-    method: "POST",
-    headers: {
-      "adyenenv":adyenenv,
-      "region":region,
-      "checkoutVersion":checkoutVersion,
-      "Content-Type": "application/json",
-    },
-    body:JSON.stringify(paymentMethodRequest),
-  });
-  dispatch(paymentMethods([await response.json(), response.status]));
-};
-
-export const initiatePayment = (data,adyenenv,region) => async (dispatch,getState) => {
-    console.log("submitting payment");
-    let paymentRequestData  = getState().payment.paymentRequestData
-    let requestdata = {
-        ...paymentRequestData,
-        ...data
-    }
-    console.log(requestdata);
-    const response = await fetch(`${process.env.REACT_APP_MERCHANT_SERVER_URL}/adyen/payments`, {
-        method: "POST",
-        headers: {
-          "adyenenv":adyenenv,
-          "region":region,
-          "checkoutVersion":getState().payment.checkoutVersion,
-          "Content-Type": "application/json",
-        },
-        body:JSON.stringify(requestdata)
-      });
-    dispatch(payments([await response.json(), response.status]));
-}
-
-export const submitAdditionalDetails = (data,adyenenv,region) => async (dispatch,getState) => {
-    const response = await fetch(`${process.env.REACT_APP_MERCHANT_SERVER_URL}/adyen/payments/details`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "adyenenv":adyenenv,
-        "region":region,
-        "checkoutVersion":getState().payment.checkoutVersion,
-        "Content-Type": "application/json",
-      },
-    });
-    dispatch(paymentDetails([await response.json(), response.status]));
-  };
-
-export const submitRecurringCharge = (data,adyenenv,region) => async (dispatch,getState) => {
-  const response = await fetch(`${process.env.REACT_APP_MERCHANT_SERVER_URL}/adyen/payments`, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "adyenenv":adyenenv,
-      "region":region,
-      "checkoutVersion":getState().payment.checkoutVersion,
-      "Content-Type": "application/json",
-    },
-  });
-  dispatch(recurringCharge([await response.json(), response.status]));
-}
 
 export const getPaymentDataStore = () => async (dispatch) => {
   const response = await fetch("/api/getPaymentDataStore");

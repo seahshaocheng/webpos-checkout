@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import AdyenCheckout from "@adyen/adyen-web";
 import "@adyen/adyen-web/dist/adyen.css";
 import { initiateCheckout } from "../app/paymentSlice";
+import moment from 'moment';
 import { getRedirectUrl } from "../util/redirect";
+
+import {Button} from "react-bootstrap";
 
 export const PaymentContainer = () => {
   return (
@@ -17,27 +20,29 @@ export const PaymentContainer = () => {
 const Checkout = (props) => {
   const dispatch = useDispatch();
   const payment = useSelector(state => state.payment);
-  let paymentRequestData = payment.paymentRequestData;
+  const config = useSelector(state => state.config);
 
   const navigate = useNavigate();
   const paymentContainer = useRef(null);
 
-
   useEffect(() => {
-    const { config, session } = payment;
-
-    dispatch(initiateCheckout(payment.adyenenv,payment.region));
+    const { config, session,checkoutInitiated } = payment;
 
     if (!session || !paymentContainer.current) {
       // initiateCheckout is not finished yet.
       return;
     }
     const createCheckout = async () => {
-      console.log("creating");
-     console.log(config);
+      console.log("the session");
+      console.log(session);
+      console.log("config");
+      console.log(config)
       const checkout = await AdyenCheckout({
         ...config,
-        session,
+        session:{
+          id:session.id,
+          sessionData:session.sessionData
+        },
         onPaymentCompleted: (response, _component) =>{
           console.log("Payment completed");
           console.log(response);
@@ -50,7 +55,6 @@ const Checkout = (props) => {
       });
 
       if (paymentContainer.current) {
-        console.log("test");
         checkout.create("dropin").mount(paymentContainer.current);
       }
     }

@@ -1,28 +1,28 @@
 const products = [
     {
-        "id": "Mug", 
-        "title": "Mug",
-        "image":"/images/jp_event/mug.jpg",
+        "id": "giraffee-feeding", 
+        "title": "Giraffee Feeding",
+        "image":"/images/mandai/giraffee-feeding.jpg",
         "price": {
-            value:100,
+            value:1,
             precision:0
         }
     },
     {
-        "id": "Waffles", 
-        "title": "Waffles",
-        "image":"/images/jp_event/cookies.jpg",
+        "id": "wild-animal", 
+        "title": "Wild Animal Carousel",
+        "image":"/images/mandai/wild-animal-fair.jpg",
         "price": {
-            value:200,
+            value:2,
             precision:0
         }
     },
     {
-        "id": "TravelAdaptor", 
-        "title": "Travel Adaptor",
-        "image":"/images/jp_event/traveladaptor.jpg",
+        "id": "ZooKeeperDay", 
+        "title": "Zoo Keeper Day",
+        "image":"/images/mandai/zoo-keeper-day.jpg",
         "price": {
-            value:300,
+            value:3,
             precision:0
         }
     },
