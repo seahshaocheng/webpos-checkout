@@ -63,7 +63,7 @@ const Checkout = (props) => {
 
   return (
     <div className="row">
-      <div className="payment-container col-4">
+      <div className="payment-container col-sm-12 col-md-6 col-log-6">
         <div ref={paymentContainer} className="payment"></div>
       </div>
     </div>
