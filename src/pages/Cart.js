@@ -148,7 +148,7 @@ export const Cart = () => {
     return(
         <React.Fragment>
             {cart.cart?.length > 0 ? (
-                <div>
+                <div style={{"padding-bottom":"15em"}}>
                     <table className="table" style={{"maxheight":"50vh","overflow":"auto"}}>
                         <thead>
                             <tr>
@@ -190,7 +190,7 @@ export const Cart = () => {
             </Alert>
             }
             <div className="fixed-bottom" style={{"bottom":"5em"}}>
-                <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
+                <div className="d-grid gap-2 col-sm-12 col-xs-12 col-md-6 col-lg-6 mx-auto" style={{"padding":"0em .8em"}}>
                 {(cart.total>0)?
                     <React.Fragment>
                         {
