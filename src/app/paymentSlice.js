@@ -97,6 +97,8 @@ export const slice = createSlice({
       state.paymentRequestData[action.payload.key] = action.payload.value;
     },
     updatePaymentAmount :(state,action)=>{
+      console.log("updating payment amount");
+      console.log(action);
       state.paymentRequestData["amount"][action.payload.key] = action.payload.value;
     },
     updateCountryCode:(state,action)=>{
@@ -215,12 +217,15 @@ export const initiateCheckout = (adyenenv,region) => async (dispatch,getState) =
   console.log("session request");
   let paymentRequest = getState().payment.paymentRequestData;
   console.log(paymentRequest)
+  let newPaymentRequest = {
+    ...paymentRequest
+  }
   const response = await fetch(`${server}/sessions`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body:JSON.stringify(paymentRequest)
+    body:JSON.stringify(newPaymentRequest)
   });
   dispatch(paymentSession([await response.json(), response.status]));
 };

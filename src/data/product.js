@@ -1,29 +1,29 @@
 const products = [
     {
-        "id": "ex1", 
-        "title": "Ex1",
-        "image":"/images/ngs/product1.jpg",
+        "id": "backpack", 
+        "title": "Back Pack",
+        "image":"/images/default/backpack.png",
         "price": {
-            value:1,
-            precision:0
+            value:100,
+            precision:2
         }
     },
     {
-        "id": "ex2", 
-        "title": "Ex2",
-        "image":"/images/ngs/product2.jpg",
+        "id": "boots", 
+        "title": "Boots",
+        "image":"/images/default/boots.png",
         "price": {
-            value:2,
-            precision:0
+            value:200,
+            precision:2
         }
     },
     {
-        "id": "ex3", 
-        "title": "Ex3",
-        "image":"/images/ngs/product3.jpg",
+        "id": "headphones", 
+        "title": "Head Phones",
+        "image":"/images/default/headphones.png",
         "price": {
-            value:3,
-            precision:0
+            value:300,
+            precision:2
         }
     },
 ]
