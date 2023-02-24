@@ -4,7 +4,7 @@ import { clearCart } from "../app/cartSlice";
 import {PaymentContainer} from "../pages/Checkout";
 import { useDispatch, useSelector } from "react-redux";
 
-import { initiateCheckout,clearSessiondata,updatePaymentRequestData } from "../app/paymentSlice";
+import { initiateCheckout,clearSessiondata,updatePaymentRequestData, updatePaymentAmount} from "../app/paymentSlice";
 
 export const Cart = () => {
     const cart = useSelector((state) => state.cart);
@@ -98,6 +98,8 @@ export const Cart = () => {
     }
 
     const handleContinueToCheckout = () => {
+        console.log("handle continue to checkout");
+        dispatch(updatePaymentAmount({key:"value",value:cart.total}));
         if(!emailReceiptSwtich){
             return(<Button variant="outline-secondary" onClick = {() => initializeCheckout() }>
             Continue
