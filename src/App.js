@@ -6,6 +6,7 @@ import {Catalog} from './pages/Catalog';
 import {Cart} from './pages/Cart';
 import {Config} from './pages/Config';
 import {StatusContainer} from './pages/status/Status';
+import {CameraApp} from './components/camera';
 import Scanner from "./components/scanner";
 
 import { addToCart } from "./app/cartSlice";
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/" element={<Catalog/>}/>
           <Route path="/cart" element={<Cart/>}/>
           <Route path="/config" element={<Config/>}/>
+          <Route path="/camera" element={<CameraApp/>}/>
           <Route path="/status/:type" element={<StatusContainer/>}/>
         </Routes>
         <Scanner

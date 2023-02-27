@@ -44,12 +44,9 @@ const Checkout = (props) => {
           sessionData:session.sessionData
         },
         onPaymentCompleted: (response, _component) =>{
-          console.log("Payment completed");
-          console.log(response);
           navigate(getRedirectUrl(response.resultCode), { replace: true })
         },
         onError: (error, _component) => {
-          console.error(error);
           navigate(`/status/error?reason=${error.message}`, { replace: true });
         },
       });
