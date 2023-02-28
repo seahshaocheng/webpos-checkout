@@ -59,8 +59,8 @@ const Checkout = (props) => {
   }, [payment, navigate])
 
   return (
-    <div className="row">
-      <div className="payment-container col-sm-12 col-md-6 col-log-6">
+    <div className="row" style={{margin:"auto"}}>
+      <div className="payment-container ">
         <div ref={paymentContainer} className="payment"></div>
       </div>
     </div>
