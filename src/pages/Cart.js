@@ -102,7 +102,7 @@ export const Cart = () => {
         dispatch(updatePaymentAmount({key:"value",value:cart.total}));
         if(!emailReceiptSwtich){
             return(<Button variant="outline-secondary" onClick = {() => initializeCheckout() }>
-            Continue
+            Set email and Continue
         </Button>)
         }
     }
@@ -150,41 +150,47 @@ export const Cart = () => {
     return(
         <React.Fragment>
             {cart.cart?.length > 0 ? (
-                <div style={{"padding-bottom":"15em"}}>
-                    <table className="table" style={{"maxheight":"50vh","overflow":"auto"}}>
-                        <thead>
-                            <tr>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Qty</th>
-                            <th scope="col">Unit Price</th>
-                            <th scope="col">Unit Total</th>
-                            </tr>
-                        </thead>
-                        {cart.cart?.map((data, i) => (
-                            <tbody key={i}>
-                            <tr>
-                                <td>{data.title}<br/><small class="text-muted">{data.id}</small></td>
-                                <td>{data.qty}</td>
-                                <td>{config.currency} {data.price.value/Math.pow(10,data.price.precision)}</td>
-                                <td>{config.currency} {data.gross/Math.pow(10,data.price.precision)}</td>
-                            </tr>
-                            </tbody>
-                        ))}
-                        <tfoot>
-                            <tr>
-                                <th scope="col" colSpan="3" style={{"textAlign":"right"}}>Total:</th>
-                                <th scope="col">{config.currency} {cart.total/Math.pow(10,cart.totalPrecision)}</th>
-                            </tr>
-                        </tfoot>
-                        </table>
+                <div className="row" style={{"padding-bottom":"15em"}}>
+                    <div className="col-xs-12 col-md-6 order-md-1">
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>dispatch(updatePaymentRequestData({key:"shopperEmail",value:e.target.value}))} />
                         </Form.Group>
+                       { handleContinueToCheckout()}
+                            <PaymentContainer/>
                         {
                             (config.useEcomm)?
                             <PaymentContainer/>:""
                         }
+                    </div>
+                    <div className="col-xs-12 col-md-6 order-first order-md-2">
+                        <table className="table" style={{"maxheight":"50vh","overflow":"auto"}}>
+                            <thead>
+                                <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Qty</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Unit Total</th>
+                                </tr>
+                            </thead>
+                            {cart.cart?.map((data, i) => (
+                                <tbody key={i}>
+                                <tr>
+                                    <td>{data.title}<br/><small class="text-muted">{data.id}</small></td>
+                                    <td>{data.qty}</td>
+                                    <td>{config.currency} {data.price.value/Math.pow(10,data.price.precision)}</td>
+                                    <td>{config.currency} {data.gross/Math.pow(10,data.price.precision)}</td>
+                                </tr>
+                                </tbody>
+                            ))}
+                            <tfoot>
+                                <tr>
+                                    <th scope="col" colSpan="3" style={{"textAlign":"right"}}>Total:</th>
+                                    <th scope="col">{config.currency} {cart.total/Math.pow(10,cart.totalPrecision)}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             ) : 
             <Alert variant='dark'>
@@ -212,8 +218,7 @@ export const Cart = () => {
                                                 <span>  Waiting... </span> 
                                             </React.Fragment>
                                         }
-                                </Button>:
-                                handleContinueToCheckout()
+                                </Button>:""
                         }
                         <Button
                             variant ="secondary"

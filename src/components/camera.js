@@ -55,11 +55,18 @@ export const CameraApp = (props) => {
                     <Button onClick={() => handleRetakePhoto()}> Retake Photo</Button>
                 </div>
                 :
-                <Camera
-                    onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
-                    sizeFactor="0.3"
-                    imageCompression = "0.5"
-                />}
+                  <React.Fragment>
+                    <Camera
+                      onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
+                      sizeFactor="0.3"
+                      imageCompression = "0.5"
+                      idealResolution = {{width: 640, height: 480}}
+                    />
+                    <br/>
+                    <br/>
+                  </React.Fragment>
+                  
+                }
         </div>
     </React.Fragment>
   );
