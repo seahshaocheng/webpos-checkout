@@ -100,7 +100,7 @@ export const Cart = () => {
     const handleContinueToCheckout = () => {
         console.log("handle continue to checkout");
         dispatch(updatePaymentAmount({key:"value",value:cart.total}));
-        if(!emailReceiptSwtich){
+        if(!emailReceiptSwtich && config.useEcomm){
             return(<Button variant="outline-secondary" onClick = {() => initializeCheckout() }>
             Set email and Continue
         </Button>)
