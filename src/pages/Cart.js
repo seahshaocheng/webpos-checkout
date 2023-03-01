@@ -157,7 +157,6 @@ export const Cart = () => {
                             <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>dispatch(updatePaymentRequestData({key:"shopperEmail",value:e.target.value}))} />
                         </Form.Group>
                        { handleContinueToCheckout()}
-                            <PaymentContainer/>
                         {
                             (config.useEcomm)?
                             <PaymentContainer/>:""
