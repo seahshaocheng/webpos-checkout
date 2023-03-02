@@ -15,6 +15,12 @@ export const Config = () => {
     const [currency,setCurrency] = useState(null);
     const [customerLoyalty,setCustomerLoyalty] = useState(null);
     const [mockLoyalty,setMockLoyalty] = useState(null);
+
+    const [selfieCCreceipt,setSelfieCCreceipt] = useState(null);
+    const [selfieCCreceiptName,setSelfieCCreceiptName] = useState(null);
+    const [selfieCCpersonTitle,setSelfieCCpersonTitle] = useState(null);
+    const [selfieCCpersonContact,setSelfieCCpersonContact] = useState(null);
+
     const [useEcomm,setUseEcomm] = useState(null);
     const [availableTerminals, setAvailableTerminals] = useState([]);
     const [availableStores,setAvailableStores] = useState([]);
@@ -29,10 +35,17 @@ export const Config = () => {
         setCustomerLoyalty(config.customerLoyalty);
         setMockLoyalty(config.mockLoyalty);
         setUseEcomm(config.useEcomm);
+
+        setSelfieCCreceipt(config.selfieCCreceipt);
+        setSelfieCCreceiptName(config.selfieCCreceiptName);
+        setSelfieCCpersonTitle(config.selfieCCpersonTitle);
+        setSelfieCCpersonContact(config.selfieCCpersonContact);
+
         fetchStore();
         if(config.store!==null){
             fetchTerminal(config.store)
         }
+
         console.log("end effecting")
     },[]);
     
@@ -111,7 +124,11 @@ export const Config = () => {
             currency,
             customerLoyalty,
             mockLoyalty,
-            useEcomm
+            useEcomm,
+            selfieCCreceipt,
+            selfieCCreceiptName,
+            selfieCCpersonTitle,
+            selfieCCpersonContact
         }
         console.log(changedConfig)
         dispatch(saveConfig(changedConfig))
@@ -141,6 +158,7 @@ export const Config = () => {
                 </ul>
             </div>:""}
             <Form style={{paddingBottom:"10em"}}>
+                <h4>Terminal to POS settings</h4>
                 <Form.Group className="mb-3">
                     <Form.Label>Store</Form.Label>
                     <InputGroup>
@@ -188,6 +206,7 @@ export const Config = () => {
                         </React.Fragment>
                     :<div className="alert alert-warning">"No terminals"</div>}
                 </Form.Group>
+                <h4>POS Settings</h4>
                 <Form.Group className="mb-3" >
                     <Form.Label>POS ID</Form.Label>
                     <Form.Control type="text" 
@@ -209,29 +228,50 @@ export const Config = () => {
                 <Form.Group>
                     <Form.Check 
                                 type="switch"
-                                id="emailReceipt"
-                                label="Perform Loyalty Flow"
-                                checked={customerLoyalty}
-                                onChange={handleCustomerLoyaltySwitch}
-                        />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Check 
-                                type="switch"
                                 id="useEcom"
                                 label="Use Demo for ECOM"
                                 checked={useEcomm}
                                 onChange={handleUseEcomm}
                         />
                 </Form.Group>
-                <Form.Group>
-                    <Form.Check 
-                                type="switch"
-                                id="useMock"
-                                label="Use Mock for Loyalty"
-                                checked={mockLoyalty}
-                                onChange={handleMockLoyalty}
-                        />
+                <h4>
+                    Selfie Email Settings:
+                </h4>
+                <Form.Group className="mb-3">
+                    <Form.Label>Your Name:</Form.Label>
+                    <Form.Control type="text" 
+                        value={selfieCCreceiptName}
+                        onChange = {(e) => setSelfieCCreceiptName(e.target.value) }/>
+                    <Form.Text className="text-muted">
+                        Enter your name
+                    </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Your Title:</Form.Label>
+                    <Form.Control type="text" 
+                        value={selfieCCpersonTitle}
+                        onChange = {(e) => setSelfieCCpersonTitle(e.target.value) }/>
+                    <Form.Text className="text-muted">
+                        Enter your job title
+                    </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Your Email:</Form.Label>
+                    <Form.Control type="text" 
+                        value={selfieCCreceipt}
+                        onChange = {(e) => setSelfieCCreceipt(e.target.value) }/>
+                    <Form.Text className="text-muted">
+                        Enter your email (please check, no validation for now)
+                    </Form.Text>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Your Phone number:</Form.Label>
+                    <Form.Control type="text" 
+                        value={selfieCCpersonContact}
+                        onChange = {(e) => setSelfieCCpersonContact(e.target.value) }/>
+                    <Form.Text className="text-muted">
+                        Enter your phone number
+                    </Form.Text>
                 </Form.Group>
                 <Form.Group>
                     <div style={{"bottom":"5em"}}>

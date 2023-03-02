@@ -8,7 +8,11 @@ export const slice = createSlice({
         posId:null,
         currency:null,
         customerLoyalty:null,
-        mockLoyalty:null
+        mockLoyalty:null,
+        selfieCCreceipt:null,
+        selfieCCreceiptName:null,
+        selfieCCpersonTitle:null,
+        selfieCCpersonContact:null
     },
     reducers:{
         act_saveConfig: (state, action) => {
@@ -20,6 +24,10 @@ export const slice = createSlice({
             state.customerLoyalty=action.payload.customerLoyalty;
             state.mockLoyalty=action.payload.mockLoyalty;
             state.useEcomm = action.payload.useEcomm
+            state.selfieCCreceipt=action.payload.selfieCCreceipt
+            state.selfieCCreceiptName=action.payload.selfieCCreceiptName
+            state.selfieCCpersonTitle=action.payload.selfieCCpersonTitle
+            state.selfieCCpersonContact=action.payload.selfieCCpersonContact
         },
     }
 });
