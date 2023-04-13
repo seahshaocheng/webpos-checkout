@@ -1,28 +1,28 @@
 const products = [
     {
-        "id": "backpack", 
-        "title": "Back Pack",
-        "image":"/images/default/backpack.png",
+        "id": "jbl500", 
+        "title": "JBLTUNE 500 BLACK",
+        "image":"/images/tangs/product-1.jpg",
         "price": {
-            value:100,
+            value:3900,
             precision:2
         }
     },
     {
-        "id": "boots", 
-        "title": "Boots",
-        "image":"/images/default/boots.png",
+        "id": "HARMANKARDON", 
+        "title": "HARMAN KARDON",
+        "image":"/images/tangs/product-2.jpg",
         "price": {
-            value:200,
+            value:40500,
             precision:2
         }
     },
     {
-        "id": "headphones", 
-        "title": "Head Phones",
-        "image":"/images/default/headphones.png",
+        "id": "jblflip", 
+        "title": "JBL FLIP ESSENTIAL",
+        "image":"/images/tangs/product-3.jpg",
         "price": {
-            value:300,
+            value:11900,
             precision:2
         }
     },

@@ -32,9 +32,12 @@ const App = () => {
   }
   return(
     <React.Fragment>
+      <div style={{"height":"2em","background":"#f36e21"}}>
+
+      </div>
       <header id="header" className="text-center" style={{"marginTop":"30px","marginBottom":"50px"}}>
         <Link to="/">
-          <img src="/images/mystore-logo.svg" style={{width:"10em"}} alt="" />
+          <img src="/images/tangs/logo.svg" style={{width:"10em"}} alt="" />
         </Link>
         <div>
           {(config.terminalId===null || config.posId===null || config.currency===null)?
