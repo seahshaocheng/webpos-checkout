@@ -4,7 +4,7 @@ const products = [
         "title": "JBLTUNE 500 BLACK",
         "image":"/images/tangs/product-1.jpg",
         "price": {
-            value:3900,
+            value:100,
             precision:2
         }
     },
@@ -13,7 +13,7 @@ const products = [
         "title": "HARMAN KARDON",
         "image":"/images/tangs/product-2.jpg",
         "price": {
-            value:40500,
+            value:200,
             precision:2
         }
     },
@@ -22,7 +22,7 @@ const products = [
         "title": "JBL FLIP ESSENTIAL",
         "image":"/images/tangs/product-3.jpg",
         "price": {
-            value:11900,
+            value:300,
             precision:2
         }
     },
