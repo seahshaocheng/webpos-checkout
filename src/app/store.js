@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key : 'root',
-  version:8.2,
+  version:9.2,
   storage,
   blacklist:['cart','payment']
 }
