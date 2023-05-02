@@ -9,6 +9,8 @@ export const Catalog = () => {
     const [selectedItemId,setSelectedItemId] =  useState(null);
     const [selectedItemData,setSelectedItemData] = useState(null)
     const [showAddToCartDialog,setShowAddToCartDialog] = useState(false);
+    const [selectedmatch,setSelectedMatch] = useState(null)
+    const [showPBLDialog,setShowPBLDialog] = useState(false);
     const dispatch = useDispatch();
 
     const handleSelectedProduct = (data) => {
@@ -26,6 +28,31 @@ export const Catalog = () => {
     const handleAddToCart = ()  => {
         handleCloseAddToCartDialog();
         dispatch(addToCart(selectedItemId));
+    }
+
+    const handleSelectedMatch = async (data) =>  {
+        let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
+        let newPaymentRequest = {
+            "amount": {
+                "value":1000,
+                "currency": "SGD"
+            },
+            "returnUrl": "http://localhost:3000/redirect",
+            "shopperEmail":"seah.marksc@gmail.com"
+        }
+        const response = await fetch(`${server}/paymentLink`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body:JSON.stringify(newPaymentRequest)
+        });
+       
+        setShowPBLDialog(true);
+    }
+
+    const handleclosePBLDialog = () => {
+        setShowPBLDialog(false);
     }
 
     return(
@@ -46,6 +73,30 @@ export const Catalog = () => {
                                 </a>
                             </li>
                         ))}
+                        <li className="products__list__list-item ">
+                                <a className="products__list__list-item__item" onClick = {() => handleSelectedMatch(
+                                    "chelbou"
+                                )}>
+                                    <img src="/images/starhub/bou-chel.jpg" alt="ChelseavsBou" style={{width:"100%"}}/>
+                                    <p className="products__list__list-item__item__title">CHE vs BOU </p>
+                                    <p className="products__list__list-item__item__price">
+                                        {config.currency}
+                                        {100000/Math.pow(10,2)}
+                                    </p>
+                                </a>
+                            </li>
+                            <li className="products__list__list-item ">
+                                <a className="products__list__list-item__item" onClick = {() => handleSelectedMatch(
+                                    "chelars"
+                                )}>
+                                    <img src="/images/starhub/ars-chel.jpg" alt="ChelArs" style={{width:"100%"}}/>
+                                    <p className="products__list__list-item__item__title">CHE vs ARS </p>
+                                    <p className="products__list__list-item__item__price">
+                                        {config.currency}
+                                        {100000/Math.pow(10,2)}
+                                    </p>
+                                </a>
+                            </li>
                 </ul>
             ) : 
                 <Alert variant='dark'>
@@ -93,6 +144,42 @@ export const Catalog = () => {
                                 variant="primary"
                                 onClick={() => handleAddToCart()}>
                                     Add to Cart
+                            </Button>
+                        </div>
+                    </Modal.Footer>
+            </Modal>
+
+            <Modal
+                show = {showPBLDialog}
+                fullscreen={true}
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                onHide={handleCloseAddToCartDialog}
+                >   
+                    <Modal.Header closeButton>
+                    </Modal.Header>
+                    <Modal.Body style={{
+                        textAlign:"center", position:"relative"
+                        }}>
+                        <img src="/images/starhub/ars-chel.jpg" style={{widht:"100%"}}/>
+                        <div className="qrCodeWrapper">
+                            <span>Scan to pay</span>
+                            <img src="/images/starhub/test.png" className="qr-code"/>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer
+                        style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        overflow:"break-word"
+                        }}>
+                        <div className="d-grid gap-2 col-8 mx-auto" style={{"marginTop":"2em"}}>
+                            <Button 
+                                size="lg"
+                                variant="primary"
+                                onClick={() => handleclosePBLDialog()}>
+                                    Close Demo
                             </Button>
                         </div>
                     </Modal.Footer>
