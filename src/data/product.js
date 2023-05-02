@@ -1,28 +1,28 @@
 const products = [
     {
-        "id": "backpack", 
-        "title": "Back Pack",
-        "image":"/images/default/backpack.png",
+        "id": "applewatch", 
+        "title": "Apple Watch",
+        "image":"/images/starhub/apple-watch.png",
         "price": {
-            value:100,
+            value:1000,
             precision:2
         }
     },
     {
-        "id": "boots", 
-        "title": "Boots",
-        "image":"/images/default/boots.png",
+        "id": "ipadmini", 
+        "title": "Ipad Mini",
+        "image":"/images/starhub/ipad-mini.png",
         "price": {
-            value:200,
+            value:2000,
             precision:2
         }
     },
     {
-        "id": "headphones", 
-        "title": "Head Phones",
-        "image":"/images/default/headphones.png",
+        "id": "iphone14", 
+        "title": "Iphone 14",
+        "image":"/images/starhub/iphone14-yellow.png",
         "price": {
-            value:300,
+            value:3000,
             precision:2
         }
     },

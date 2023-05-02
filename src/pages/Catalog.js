@@ -11,6 +11,7 @@ export const Catalog = () => {
     const [showAddToCartDialog,setShowAddToCartDialog] = useState(false);
     const [selectedmatch,setSelectedMatch] = useState(null)
     const [showPBLDialog,setShowPBLDialog] = useState(false);
+    const [PBLQR,setPBLQR] = useState(null);
     const dispatch = useDispatch();
 
     const handleSelectedProduct = (data) => {
@@ -31,13 +32,22 @@ export const Catalog = () => {
     }
 
     const handleSelectedMatch = async (data) =>  {
+        setSelectedMatch(data);
         let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
+        let theme_id = null;
+        if(selectedmatch === "chelbou"){
+            theme_id="307f32e3-3fa0-4957-97f3-b2963e85d100";
+        }
+        else{
+            theme_id="779aea6d-e81f-4de6-8b34-0e8c9ec56aeb";
+        }
         let newPaymentRequest = {
             "amount": {
                 "value":1000,
                 "currency": "SGD"
             },
-            "returnUrl": "http://localhost:3000/redirect",
+            "theme_id":theme_id,
+            "returnUrl": "https://www.adyen.com/",
             "shopperEmail":"seah.marksc@gmail.com"
         }
         const response = await fetch(`${server}/paymentLink`, {
@@ -47,12 +57,18 @@ export const Catalog = () => {
             },
             body:JSON.stringify(newPaymentRequest)
         });
-       
+
+        let paymentLinkResponse = await response.json();
+        if(paymentLinkResponse.qrCode!==null && paymentLinkResponse.qrCode!==undefined){
+            setPBLQR(paymentLinkResponse.qrCode);
+        }
         setShowPBLDialog(true);
     }
 
     const handleclosePBLDialog = () => {
+        setPBLQR(null);
         setShowPBLDialog(false);
+        setSelectedMatch(null);
     }
 
     return(
@@ -81,7 +97,7 @@ export const Catalog = () => {
                                     <p className="products__list__list-item__item__title">CHE vs BOU </p>
                                     <p className="products__list__list-item__item__price">
                                         {config.currency}
-                                        {100000/Math.pow(10,2)}
+                                        {1000/Math.pow(10,2)}
                                     </p>
                                 </a>
                             </li>
@@ -93,7 +109,7 @@ export const Catalog = () => {
                                     <p className="products__list__list-item__item__title">CHE vs ARS </p>
                                     <p className="products__list__list-item__item__price">
                                         {config.currency}
-                                        {100000/Math.pow(10,2)}
+                                        {1000/Math.pow(10,2)}
                                     </p>
                                 </a>
                             </li>
@@ -161,10 +177,16 @@ export const Catalog = () => {
                     <Modal.Body style={{
                         textAlign:"center", position:"relative"
                         }}>
+                            {
+                                (selectedmatch==="chelbou")?
+                                    <img src="/images/starhub/bou-chel.jpg" style={{widht:"100%"}}/>:
+                                    <img src="/images/starhub/ars-chel.jpg" style={{widht:"100%"}}/>
+                            }
                         <img src="/images/starhub/ars-chel.jpg" style={{widht:"100%"}}/>
                         <div className="qrCodeWrapper">
                             <span>Scan to pay</span>
-                            <img src="/images/starhub/test.png" className="qr-code"/>
+                            {(PBLQR!==null)?<img src={PBLQR} className="qr-code"/>:""}
+                            
                         </div>
                     </Modal.Body>
                     <Modal.Footer
