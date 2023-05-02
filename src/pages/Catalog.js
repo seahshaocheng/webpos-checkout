@@ -41,6 +41,12 @@ export const Catalog = () => {
         else{
             theme_id="779aea6d-e81f-4de6-8b34-0e8c9ec56aeb";
         }
+
+        let  shopperEmail = "seah.marksc@gmail.com";
+       if(config.subscriberEmail !== null &&  config.subscriberEmail !== undefined){
+        shopperEmail = config.subscriberEmail;
+        }
+
         let newPaymentRequest = {
             "amount": {
                 "value":1000,
@@ -48,7 +54,7 @@ export const Catalog = () => {
             },
             "theme_id":theme_id,
             "returnUrl": "https://www.adyen.com/",
-            "shopperEmail":"seah.marksc@gmail.com"
+            "shopperEmail":shopperEmail
         }
         const response = await fetch(`${server}/paymentLink`, {
             method: "POST",

@@ -16,6 +16,8 @@ export const Config = () => {
     const [customerLoyalty,setCustomerLoyalty] = useState(null);
     const [mockLoyalty,setMockLoyalty] = useState(null);
 
+    const [subscriberEmail,setSubscriberEmail] = useState(null);
+
     const [selfieCCreceipt,setSelfieCCreceipt] = useState(null);
     const [selfieCCreceiptName,setSelfieCCreceiptName] = useState(null);
     const [selfieCCpersonTitle,setSelfieCCpersonTitle] = useState(null);
@@ -235,42 +237,15 @@ export const Config = () => {
                         />
                 </Form.Group>
                 <h4>
-                    Selfie Email Settings:
+                    Subscriber Email Settings:
                 </h4>
                 <Form.Group className="mb-3">
                     <Form.Label>Your Name:</Form.Label>
                     <Form.Control type="text" 
-                        value={selfieCCreceiptName}
-                        onChange = {(e) => setSelfieCCreceiptName(e.target.value) }/>
+                        value={subscriberEmail}
+                        onChange = {(e) => setSubscriberEmail(e.target.value) }/>
                     <Form.Text className="text-muted">
-                        Enter your name
-                    </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Your Title:</Form.Label>
-                    <Form.Control type="text" 
-                        value={selfieCCpersonTitle}
-                        onChange = {(e) => setSelfieCCpersonTitle(e.target.value) }/>
-                    <Form.Text className="text-muted">
-                        Enter your job title
-                    </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Your Email:</Form.Label>
-                    <Form.Control type="text" 
-                        value={selfieCCreceipt}
-                        onChange = {(e) => setSelfieCCreceipt(e.target.value) }/>
-                    <Form.Text className="text-muted">
-                        Enter your email (please check, no validation for now)
-                    </Form.Text>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Your Phone number:</Form.Label>
-                    <Form.Control type="text" 
-                        value={selfieCCpersonContact}
-                        onChange = {(e) => setSelfieCCpersonContact(e.target.value) }/>
-                    <Form.Text className="text-muted">
-                        Enter your phone number
+                        Enter subscriber demo email
                     </Form.Text>
                 </Form.Group>
                 <Form.Group>

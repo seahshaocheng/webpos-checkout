@@ -9,6 +9,7 @@ export const slice = createSlice({
         currency:null,
         customerLoyalty:null,
         mockLoyalty:null,
+        subscriberEmail:null,
         selfieCCreceipt:null,
         selfieCCreceiptName:null,
         selfieCCpersonTitle:null,
@@ -28,6 +29,7 @@ export const slice = createSlice({
             state.selfieCCreceiptName=action.payload.selfieCCreceiptName
             state.selfieCCpersonTitle=action.payload.selfieCCpersonTitle
             state.selfieCCpersonContact=action.payload.selfieCCpersonContact
+            state.subscriberEmail = action.payload.subscriberEmail
         },
     }
 });
