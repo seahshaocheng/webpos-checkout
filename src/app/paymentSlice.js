@@ -8,6 +8,7 @@ export const slice = createSlice({
     initateSession:false,
     error: "",
     session:null,
+    todayorder:[],
     sessionData: null,
     dropinInitiated:false,
     adyenenv:"TEST",
@@ -206,11 +207,15 @@ export const slice = createSlice({
     updateLoadCheckout:(state,action) =>  {
       console.log("update checkout state "+action.payload);
       state.initateSession = action.payload
+    },
+    setTodayorder : (state,action) => {
+      console.log("update checkout state "+action.payload);
+      state.todayorder = action.payload
     }
   },
 });
 
-export const { updateLoadCheckout, clearSessiondata, paymentSession, paymentDataStore, updateAdditionalData, updatePaymentRequestData, paymentMethods,payments,paymentDetails,updateAdyenEnviornment,updateRegion,recurringCharge,updatePaymentMethodConfig,updateShopperReference,updatePaymentAmount,includeMetaData, updateCountryCode, updateCheckoutVersion,updateCheckoutStatus} = slice.actions;
+export const { setTodayorder,updateLoadCheckout, clearSessiondata, paymentSession, paymentDataStore, updateAdditionalData, updatePaymentRequestData, paymentMethods,payments,paymentDetails,updateAdyenEnviornment,updateRegion,recurringCharge,updatePaymentMethodConfig,updateShopperReference,updatePaymentAmount,includeMetaData, updateCountryCode, updateCheckoutVersion,updateCheckoutStatus} = slice.actions;
 
 export const initiateCheckout = (adyenenv,region) => async (dispatch,getState) => {
   let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
@@ -233,6 +238,26 @@ export const initiateCheckout = (adyenenv,region) => async (dispatch,getState) =
 export const getPaymentDataStore = () => async (dispatch) => {
   const response = await fetch("/api/getPaymentDataStore");
   dispatch(paymentDataStore([await response.json(), response.status]));
+};
+
+export const fetchTodayOrders = () => async (dispatch) => {
+  let server = process.env.REACT_APP_MERCHANT_SERVER_URL;
+  const response = await fetch(`${server}/fetchTodayOrders`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  let responsestatus = await response.status;
+  let responsejson = await response.json();
+
+  if(responsestatus<300){
+    dispatch(setTodayorder(responsejson));
+  }
+  else{
+    console.log("Error fetching orders");
+  }
 };
 
 export default slice.reducer;

@@ -8,6 +8,7 @@ import {Config} from './pages/Config';
 import {StatusContainer} from './pages/status/Status';
 import {CameraApp} from './components/camera';
 import Scanner from "./components/scanner";
+import {Totals} from './pages/Totals';
 
 import { addToCart } from "./app/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/config" element={<Config/>}/>
           <Route path="/camera" element={<CameraApp/>}/>
           <Route path="/status/:type" element={<StatusContainer/>}/>
+          <Route path="/total" element={<Totals/>}/>
         </Routes>
         <Scanner
         handleQuickResponse={handleQuickResponse}

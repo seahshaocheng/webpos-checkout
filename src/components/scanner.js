@@ -136,6 +136,10 @@ const Scanner = ({
                     }
                   </Link>
                 </li>
+                <li class="nav-item">
+                  <Link className="nav-link" to="/total">Totals
+                  </Link>
+                </li>
               </ul>
           </nav>
       </div>
